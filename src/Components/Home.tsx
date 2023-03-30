@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { API_URL } from "../services/API_URL";
 import { Pagination } from "../services/Pgination";
 
 export const Home = ({ transformedData, kFetch }: any) => {
@@ -15,7 +16,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
   };
 
   useEffect(() => {
-    kFetch(process.env.REACT_APP_BACKEND_URL + "questions");
+    kFetch(API_URL + "questions");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

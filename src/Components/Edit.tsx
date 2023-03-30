@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../services/API_URL";
 
 export const Edit = ({ details, onEdit }: any) => {
   const [show, setShow] = useState(false);
@@ -39,8 +40,7 @@ export const Edit = ({ details, onEdit }: any) => {
       second: "2-digit",
     });
     const date =
-      `${current.getDate()}/${
-        current.getMonth() + 1
+      `${current.getDate()}/${current.getMonth() + 1
       }/${current.getFullYear()}` +
       " " +
       `${currentDateTime}`;
@@ -89,7 +89,7 @@ export const Edit = ({ details, onEdit }: any) => {
       body: formData,
     };
     fetch(
-      `${process.env.REACT_APP_BACKEND_URL}questions/${Did}`,
+      `${API_URL}questions/${Did}`,
       requestOptions
     )
       .then((response) => response)

@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { API_URL } from "../services/API_URL";
 
 interface secData {
   question: string;
@@ -30,7 +31,7 @@ export const Details = () => {
   });
   const { Details, kFetch, setDetails } = useFetchDetails();
   useEffect(() => {
-    kFetch(`${process.env.REACT_APP_BACKEND_URL}questions/${id}`);
+    kFetch(`${API_URL}questions/${id}`);
   }, [Details]);
 
   const handleEdit = () => {
@@ -43,7 +44,7 @@ export const Details = () => {
       method: "delete",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`${process.env.REACT_APP_BACKEND_URL}questions/${id}`, requestOptions)
+    fetch(`${API_URL}questions/${id}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({

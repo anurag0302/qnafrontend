@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { API_URL } from "../services/API_URL";
 
 const AddQnA = () => {
   const [Question, setQuestion] = useState("");
@@ -48,8 +49,7 @@ const AddQnA = () => {
     });
 
     const date =
-      `${current.getDate()}/${
-        current.getMonth() + 1
+      `${current.getDate()}/${current.getMonth() + 1
       }/${current.getFullYear()}` +
       " " +
       `${currentDateTime}`;
@@ -71,7 +71,7 @@ const AddQnA = () => {
       method: "POST",
       body: formData,
     };
-    fetch(process.env.REACT_APP_BACKEND_URL + "Questions", requestOptions)
+    fetch(API_URL + "Questions", requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({
