@@ -33,8 +33,8 @@ export const Users = () => {
 
   const handleShow = async (id: any) => {
     setsId(id);
-   
-    const _url = `http://localhost:5000/userinfo/${id}`;
+
+    const _url = `${process.env.REACT_APP_BACKEND_URL}userinfo/${id}`;
     const response = await fetch(_url);
     const data = await response.json();
     seteditData(data.Item);
@@ -43,15 +43,13 @@ export const Users = () => {
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
-    kFetch("http://localhost:5000/userinfo");
+    kFetch(process.env.REACT_APP_BACKEND_URL + "userinfo");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [masterData]);
 
   const handleEdit = () => {};
 
   const handleSave = () => {
-    
-
     const data = {
       rolePosition: role,
     };
@@ -61,7 +59,7 @@ export const Users = () => {
       body: JSON.stringify(data),
     };
 
-    fetch(`http://localhost:5000/userinfo/${sId}`, requestOptions)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}userinfo/${sId}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         Toast.fire({
@@ -93,7 +91,7 @@ export const Users = () => {
       method: "delete",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`http://localhost:5000/userinfo/${id}`, requestOptions)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}userinfo/${id}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({
@@ -118,11 +116,6 @@ export const Users = () => {
 
     navigate("/master");
   };
-
-
-
-
- 
 
   return (
     <>

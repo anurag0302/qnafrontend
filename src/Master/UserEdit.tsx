@@ -27,7 +27,7 @@ export const UserEdit = (id: any, fullName: any) => {
   const Did = id;
 
   useEffect(() => {
-    kFetch(`http://localhost:5000/userinfo/${id}`);
+    kFetch(`${process.env.REACT_APP_BACKEND_URL}userinfo/${id}`);
   }, [id, kFetch]);
 
   // console.log("role", role);

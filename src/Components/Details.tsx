@@ -7,7 +7,6 @@ import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-
 interface secData {
   question: string;
   answer: string;
@@ -31,7 +30,7 @@ export const Details = () => {
   });
   const { Details, kFetch, setDetails } = useFetchDetails();
   useEffect(() => {
-    kFetch(`http://localhost:5000/questions/${id}`);
+    kFetch(`${process.env.REACT_APP_BACKEND_URL}questions/${id}`);
   }, [Details]);
 
   const handleEdit = () => {
@@ -44,7 +43,7 @@ export const Details = () => {
       method: "delete",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`http://localhost:5000/questions/${id}`, requestOptions)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}questions/${id}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({
@@ -136,7 +135,6 @@ export const Details = () => {
                   <></>
                 )}
               </div>
-              
 
               {/* Edited Info and Buttons Panel */}
 

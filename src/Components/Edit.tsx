@@ -79,17 +79,19 @@ export const Edit = ({ details, onEdit }: any) => {
       secondary: secondary,
       imgLocation: details.Item.imageLocation,
     };
-    
-    const formData = new FormData();
-      formData.append("image", image.data);
-      formData.append("data",JSON.stringify(data))
 
+    const formData = new FormData();
+    formData.append("image", image.data);
+    formData.append("data", JSON.stringify(data));
 
     const requestOptions = {
       method: "put",
       body: formData,
     };
-    fetch(`http://localhost:5000/questions/${Did}`, requestOptions)
+    fetch(
+      `${process.env.REACT_APP_BACKEND_URL}questions/${Did}`,
+      requestOptions
+    )
       .then((response) => response)
       .then((res) =>
         MySwal.fire({

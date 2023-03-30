@@ -9,10 +9,7 @@ const AddQnA = () => {
   let navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
- 
-
-  const [image, setImage] = useState({ preview: '', data: '' })
-
+  const [image, setImage] = useState({ preview: "", data: "" });
 
   // const handleInputChangeImage = (event: any) => {
   //   if (event.target.files[0] === undefined) {
@@ -29,17 +26,16 @@ const AddQnA = () => {
   //     });
   //   }
   // };
-  
 
-  const handleFileChange = (e:any) => {
+  const handleFileChange = (e: any) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
-    }
-    setImage(img)
-  }
+    };
+    setImage(img);
+  };
 
-  const handleAdd = (e:any) => {
+  const handleAdd = (e: any) => {
     if (Question === "" || Answer === "") {
       alert("please Add all the fields");
       return;
@@ -58,9 +54,8 @@ const AddQnA = () => {
       " " +
       `${currentDateTime}`;
 
-      const formData = new FormData();
-      formData.append("image", image.data);
-      
+    const formData = new FormData();
+    formData.append("image", image.data);
 
     const data = {
       question: Question,
@@ -70,15 +65,13 @@ const AddQnA = () => {
       secondary: [],
     };
 
-    formData.append("data",JSON.stringify(data))
-
-    
+    formData.append("data", JSON.stringify(data));
 
     const requestOptions = {
       method: "POST",
       body: formData,
     };
-    fetch("http://localhost:5000/Questions", requestOptions)
+    fetch(process.env.REACT_APP_BACKEND_URL + "Questions", requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({
@@ -100,7 +93,7 @@ const AddQnA = () => {
           timer: 1500,
         });
       });
-   navigate("/");
+    navigate("/");
   };
 
   return (
@@ -112,55 +105,54 @@ const AddQnA = () => {
               Add Q<span style={{ color: "red" }}>n</span>A
             </h2>
             <form>
-            <div className="mb-3">
-              <label htmlFor="question" className="form-label">
-                Question<span style={{ color: "red" }}>*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="question"
-                value={Question}
-                onChange={(e) => {
-                  setQuestion(e.target.value);
-                }}
-              />
-            </div>
+              <div className="mb-3">
+                <label htmlFor="question" className="form-label">
+                  Question<span style={{ color: "red" }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="question"
+                  value={Question}
+                  onChange={(e) => {
+                    setQuestion(e.target.value);
+                  }}
+                />
+              </div>
 
-            <div className="my-3">
-              <label htmlFor="answer" className="form-label">
-                Answer<span style={{ color: "red" }}>*</span>
-              </label>
-              <textarea
-                rows={3}
-                className="form-control"
-                id="answer"
-                value={Answer}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                }}
-              />
-            </div>
-            <div className="my-3">
-              <label htmlFor="answer" className="form-label">
-                Select Image
-              </label>
-              <input
-                type="file"
-                className="form-control"
-                name="upload_file"
-                onChange={handleFileChange}
-              />
-            </div>
+              <div className="my-3">
+                <label htmlFor="answer" className="form-label">
+                  Answer<span style={{ color: "red" }}>*</span>
+                </label>
+                <textarea
+                  rows={3}
+                  className="form-control"
+                  id="answer"
+                  value={Answer}
+                  onChange={(e) => {
+                    setAnswer(e.target.value);
+                  }}
+                />
+              </div>
+              <div className="my-3">
+                <label htmlFor="answer" className="form-label">
+                  Select Image
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  name="upload_file"
+                  onChange={handleFileChange}
+                />
+              </div>
 
-            <button
-              type="button"
-              className="btn btn-primary btn-lg"
-              onClick={handleAdd}
-            >
-              Add QnA
-            </button>
-            
+              <button
+                type="button"
+                className="btn btn-primary btn-lg"
+                onClick={handleAdd}
+              >
+                Add QnA
+              </button>
             </form>
           </div>
           <div className="col-lg-6 text-start ">

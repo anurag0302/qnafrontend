@@ -15,7 +15,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
   };
 
   useEffect(() => {
-    kFetch("http://localhost:5000/questions");
+    kFetch(process.env.REACT_APP_BACKEND_URL + "questions");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
