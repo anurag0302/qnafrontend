@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useFetchMaster } from "../FetchingApi/useFetchMaster";
+import { API_URL } from "../services/API_URL";
 
 interface dataDetails {
   id: string;
@@ -27,7 +28,7 @@ export const UserEdit = (id: any, fullName: any) => {
   const Did = id;
 
   useEffect(() => {
-    kFetch(`${process.env.REACT_APP_BACKEND_URL}userinfo/${id}`);
+    kFetch(`${API_URL}userinfo/${id}`);
   }, [id, kFetch]);
 
   // console.log("role", role);
@@ -90,11 +91,11 @@ export const UserEdit = (id: any, fullName: any) => {
                 className="form-control"
                 id="Question"
                 defaultValue={fullName.fullname}
-                // onChange={(e) => {
-                //   setFullName(e.target.value);
-                // }}
+              // onChange={(e) => {
+              //   setFullName(e.target.value);
+              // }}
 
-                // readOnly
+              // readOnly
               />
               <br />
 

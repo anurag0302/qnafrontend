@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { API_URL } from "../services/API_URL";
 
 interface secData {
   question: string;
@@ -30,7 +31,7 @@ export const Details = () => {
   });
   const { Details, kFetch, setDetails } = useFetchDetails();
   useEffect(() => {
-    kFetch(`${process.env.REACT_APP_BACKEND_URL}questions/${id}`);
+    kFetch(`${API_URL}questions/${id}`);
   }, [Details]);
 
   const handleEdit = () => {
@@ -43,7 +44,7 @@ export const Details = () => {
       method: "delete",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`${process.env.REACT_APP_BACKEND_URL}questions/${id}`, requestOptions)
+    fetch(`${API_URL}questions/${id}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({
@@ -86,9 +87,9 @@ export const Details = () => {
     return (
       <>
         {Details && (
-          <div className="container-fluid">
+          <div className="container-fluid h-100">
             <div className="row mt-3 ">
-              <div className="col-lg-8 col-md-8 p-4 ">
+              <div className="col-lg-8 col-md-8 p-4 h-100">
                 <h3>Question: {Details.Item.question} </h3>
                 <h5>Answer: {Details.Item.answer}</h5>
                 {Details.Item.imageLocation !== "null" ? (
@@ -114,10 +115,10 @@ export const Details = () => {
     return (
       <>
         {Details && (
-          <div className="container-fluid">
+          <div className="container-fluid h-100">
             <div className="row mt-3 ">
               <div
-                className="col-lg-8 col-md-8 p-4 "
+                className="col-lg-8 col-md-8 p-4 h-100"
                 style={{ borderRight: "5px solid black" }}
               >
                 <h3>Question: {Details.Item.question} </h3>

@@ -9,6 +9,7 @@ import { UserEdit } from "./UserEdit";
 import { useFetchDetails } from "../FetchingApi/useFetchDetails";
 import "./RadioCss.css";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../services/API_URL";
 
 export const Users = () => {
   const [show, setShow] = useState(false);
@@ -34,7 +35,7 @@ export const Users = () => {
   const handleShow = async (id: any) => {
     setsId(id);
 
-    const _url = `${process.env.REACT_APP_BACKEND_URL}userinfo/${id}`;
+    const _url = `${API_URL}userinfo/${id}`;
     const response = await fetch(_url);
     const data = await response.json();
     seteditData(data.Item);
@@ -43,11 +44,11 @@ export const Users = () => {
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
-    kFetch(process.env.REACT_APP_BACKEND_URL + "userinfo");
+    kFetch(API_URL + "userinfo");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [masterData]);
 
-  const handleEdit = () => {};
+  const handleEdit = () => { };
 
   const handleSave = () => {
     const data = {
@@ -59,7 +60,7 @@ export const Users = () => {
       body: JSON.stringify(data),
     };
 
-    fetch(`${process.env.REACT_APP_BACKEND_URL}userinfo/${sId}`, requestOptions)
+    fetch(`${API_URL}userinfo/${sId}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         Toast.fire({
@@ -91,7 +92,7 @@ export const Users = () => {
       method: "delete",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`${process.env.REACT_APP_BACKEND_URL}userinfo/${id}`, requestOptions)
+    fetch(`${API_URL}userinfo/${id}`, requestOptions)
       .then((response) => response)
       .then((res) =>
         MySwal.fire({
@@ -180,7 +181,7 @@ export const Users = () => {
                   className="form-control"
                   id="Question"
                   defaultValue={editData.fullName}
-                  // readOnly
+                // readOnly
                 />
                 <br />
 
@@ -217,9 +218,9 @@ export const Users = () => {
                     // checked={editData.rolePosition === "Admin"}
                     defaultChecked={editData.rolePosition === "Master"}
                     disabled
-                    // onChange={(e) => {
-                    //   setRole(e.target.value);
-                    // }}
+                  // onChange={(e) => {
+                  //   setRole(e.target.value);
+                  // }}
                   />{" "}
                   Master &nbsp;
                 </div>

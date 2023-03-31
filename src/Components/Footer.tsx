@@ -5,21 +5,27 @@ const Footer = () => {
     <>
       <div
         className="container-fluid mt-5 "
-        style={{ margin: "0px", padding: "0px", marginBottom: "0px" }}
+        style={{
+          margin: "0px",
+          padding: "0px",
+          marginBottom: "0px",
+          position: "relative",
+          left: "0",
+          bottom: "0",
+          width: "100%",
+        }}
       >
         <footer
           className="text-center text-lg-start text-white"
           style={{ backgroundColor: "#3e4551" }}
         >
-          <div className="container p-4 pb-0">
+          <div className="container p-2">
             <section className="">
               <div className="row">
                 <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
-                  <h5 className="text-uppercase">FOOTER CONTENT</h5>
+                  <h5 className="">Sample Footer</h5>
 
-                  <p>
-                    Lorem ipsum dolor 
-                  </p>
+                  <p>Lorem ipsum dolor</p>
                 </div>
 
                 <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
@@ -29,11 +35,6 @@ const Footer = () => {
                     <li>
                       <a href="#!" className="text-white">
                         Link 1
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#!" className="text-white">
-                        Link 2
                       </a>
                     </li>
                   </ul>
@@ -48,11 +49,6 @@ const Footer = () => {
                         Link 1
                       </a>
                     </li>
-                    <li>
-                      <a href="#!" className="text-white">
-                        Link 2
-                      </a>
-                    </li>
                   </ul>
                 </div>
 
@@ -65,11 +61,6 @@ const Footer = () => {
                         Link 1
                       </a>
                     </li>
-                    <li>
-                      <a href="#!" className="text-white">
-                        Link 2
-                      </a>
-                    </li>
                   </ul>
                 </div>
 
@@ -80,11 +71,6 @@ const Footer = () => {
                     <li>
                       <a href="#!" className="text-white">
                         Link 1
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#!" className="text-white">
-                        Link 2
                       </a>
                     </li>
                   </ul>
@@ -106,8 +92,7 @@ const Footer = () => {
             >
               Nagarro
             </a>
-            &nbsp;<span style={{ color: "red" }}>©</span> 2022. All rights
-            reserved.
+            &nbsp;<span>©</span> 2022. All rights reserved.
           </p>
         </footer>
       </div>

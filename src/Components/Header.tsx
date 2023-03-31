@@ -8,10 +8,8 @@ export const Header = ({ setSearchTerm }: any) => {
 
   const { auth }: any = useAuth();
   const { setAuth }: any = useAuth();
-  
 
   const searchHandle = (e: any) => {
-    
     e.preventDefault();
     if (temp === "") {
       alert("Please enter the fields ");
@@ -25,7 +23,7 @@ export const Header = ({ setSearchTerm }: any) => {
     // if used in more components, this should be in context
     // axios to /logout endpoint
     setAuth({});
-    localStorage.removeItem('token')
+    localStorage.removeItem("token");
     navigate("/login");
   };
 
@@ -254,13 +252,12 @@ export const Header = ({ setSearchTerm }: any) => {
     return (
       <>
         <div
-          className="container-fluid d-flex  align-items-center justify-content-between header"
+          className="container-fluid d-flex  align-items-center justify-content-between header p-2"
           style={{
             backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
           }}
         >
           <h4>
-            {" "}
             <Link
               to="/"
               style={{
@@ -269,7 +266,7 @@ export const Header = ({ setSearchTerm }: any) => {
                 marginLeft: "10px",
               }}
             >
-              Team2{" "}
+              Team2
             </Link>
           </h4>
         </div>

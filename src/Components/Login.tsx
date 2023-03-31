@@ -21,61 +21,52 @@ const Login = () => {
   const [resp1, setResp1] = useState<any>();
   //const [success, setSuccess] = useState(false);
 
+  //=====================================================
+  useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const response = await axios.post(
+          "tokeninfo",
+          JSON.stringify({ token: localStorage.getItem("token") }),
+          {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+          }
+        );
 
+        const name = response.data.Item.fullName;
+        const id = response.data.Item.id;
+        const password = response.data.Item.password;
+        const role = response.data.Item.rolePosition;
+        setAuth({ name, id, password, role });
 
+        setEmail("");
+        setPwd("");
 
+        navigate(from, { replace: true });
+      } catch (err: any) {
+        if (!err.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing Email or Password");
+        } else if (err.response?.status === 401) {
+          setErrMsg("Invalid Credentials");
+        } else {
+          setErrMsg("Login Failed");
 
-
-//=====================================================
-useEffect(()=>{
-  const checkLogin = async () => {
-    try {
-      const response = await axios.post(
-        "tokeninfo",
-        JSON.stringify({token:localStorage.getItem("token") }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          localStorage.removeItem("token");
         }
-      );
-      
-
-      const name = response.data.Item.fullName;
-      const id = response.data.Item.id;
-      const password = response.data.Item.password;
-      const role = response.data.Item.rolePosition;
-      setAuth({ name, id, password, role });
-    
-
-      setEmail("");
-      setPwd("");
-
-
-      navigate(from, { replace: true });
-    } catch (err: any) {
-      if (!err.response) {
-        setErrMsg("No Server Response");
-      } else if (err.response?.status === 400) {
-        setErrMsg("Missing Email or Password");
-      } else if (err.response?.status === 401) {
-        setErrMsg("Invalid Credentials");
-      } else {
-        setErrMsg("Login Failed");
-        
-      localStorage.removeItem('token')
+        errRef.current.focus();
       }
-      errRef.current.focus();
+    };
+
+    if (localStorage.getItem("token")) {
+      checkLogin();
+      console.log("hi login");
     }
-  };
+  });
 
-
-  if(localStorage.getItem("token")){
-    checkLogin();
-    console.log("hi login")
-  }
-})
-
-//=====================================================
+  //=====================================================
 
   useEffect(() => {
     emailRef.current.focus();
@@ -98,7 +89,6 @@ useEffect(()=>{
           withCredentials: true,
         }
       );
-      
 
       // const response = await axios.get(LOGIN_URL+email);
       // console.log(response.data.Item);
@@ -133,8 +123,7 @@ useEffect(()=>{
       setEmail("");
       setPwd("");
       //setSuccess(true);
-      localStorage.setItem('token',response.data.token)
-
+      localStorage.setItem("token", response.data.token);
 
       navigate(from, { replace: true });
     } catch (err: any) {
@@ -145,9 +134,7 @@ useEffect(()=>{
       } else if (err.response?.status === 401) {
         setErrMsg("Invalid Credentials");
       } else {
-        
         setErrMsg(" Failed, Please Login again");
-        
       }
       errRef.current.focus();
     }
@@ -165,7 +152,7 @@ useEffect(()=>{
                 </p>
             </section>
         ) : ( */}
-      <div className="App container-fluid">
+      <div className="App container-fluid p-4">
         <section>
           <p
             ref={errRef}
@@ -175,8 +162,7 @@ useEffect(()=>{
             {errMsg}
           </p>
 
-          <div className="row">
-            <div className="col-md-4"></div>
+          <div className="row justify-content-center">
             <div className="col-md-4 mt-2">
               <form onSubmit={handleSubmit}>
                 <div className="card">
@@ -186,7 +172,9 @@ useEffect(()=>{
                   <div className="card-body">
                     {/* <h5 className="card-title">Special title treatment</h5> */}
                     <p className="card-text">
-                      <label htmlFor="email">Email </label>
+                      <label htmlFor="email" className="mb-3">
+                        Email
+                      </label>
                       <input
                         type="text"
                         id="email"
@@ -195,17 +183,18 @@ useEffect(()=>{
                         onChange={(e) => setEmail(e.target.value)}
                         value={email}
                         required
-                        className="form-control"
+                        className="form-control mb-3"
                       />
-                      <br />
-                      <label htmlFor="password">Password </label>
+                      <label htmlFor="password" className="mb-3">
+                        Password{" "}
+                      </label>
                       <input
                         type="password"
                         id="password"
                         onChange={(e) => setPwd(e.target.value)}
                         value={pwd}
                         required
-                        className="form-control"
+                        className="form-control mb-3"
                       />
                     </p>
                     {/* <a href="#" className="btn btn-primary">
@@ -213,17 +202,15 @@ useEffect(()=>{
                   </a> */}
                   </div>
                   <div className="card-footer">
-                    {" "}
                     <div className="row">
-                      <div className="col-md-6">
-                        {" "}
+                      <div className="col-md-8 my-auto">
                         Need an Account?
                         <span>
-                          <Link to={"/register"}>Sign Up</Link>
+                          <Link to={"/register"}> Sign Up </Link>
                           {/* put router link */}
                         </span>
                       </div>
-                      <div style={{ textAlign: "right" }} className="col-md-6">
+                      <div style={{ textAlign: "right" }} className="col-md-4">
                         <button
                           style={{ backgroundColor: "rgb( 255, 153, 0)" }}
                           className="btn btn-md "
@@ -236,7 +223,6 @@ useEffect(()=>{
                 </div>
               </form>
             </div>
-            <div className="col-md-4"></div>
           </div>
         </section>
       </div>

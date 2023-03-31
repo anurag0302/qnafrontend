@@ -1,10 +1,8 @@
-
 import { useRef, useState, useEffect } from "react";
 import {
   faCheck,
   faTimes,
   faInfoCircle,
-  
   faUser,
   faEnvelope,
   faLock,
@@ -51,9 +49,7 @@ const Register = () => {
 
   const inp = {};
 
-
   useEffect(() => {
-    
     userRef.current.focus();
   }, []);
   //only happens when component loads and set focus on name input
@@ -118,7 +114,7 @@ const Register = () => {
       );
       //console.log(response?.data);
       //console.log(response?.accessToken);
-     // console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
       // setSuccess(true);
       MySwal.fire({
         position: "center",
@@ -157,20 +153,17 @@ const Register = () => {
         </section>
       ) : (
         <div className="App">
-          <div className="row">
-            <div className="col-3"></div>
+          <div className="row justify-content-center">
             <div
-              className="col-6"
+              className="col-md-4"
               // style={{ textAlign: "center" }}
             >
-              <div className="card mt-2">
+              <div className="card mt-4">
                 <div className="card-header" style={{ textAlign: "center" }}>
                   {/* <h1>Register</h1> */}
                   <h4>Register</h4>
                 </div>
                 <div className="card-body">
-                  
-
                   <form onSubmit={handleSubmit}>
                     <div className="row">
                       <div className="col-md-12">
@@ -189,7 +182,7 @@ const Register = () => {
                         <div className="input-group">
                           <div
                             className="input-group-addon form-control"
-                            style={{ maxWidth: "7%" }}
+                            style={{ maxWidth: "11%" }}
                           >
                             <FontAwesomeIcon icon={faUser} />
                           </div>
@@ -245,7 +238,7 @@ const Register = () => {
                         <div className="input-group">
                           <div
                             className="input-group-addon form-control"
-                            style={{ maxWidth: "7%" }}
+                            style={{ maxWidth: "11%" }}
                           >
                             <FontAwesomeIcon icon={faEnvelope} />
                           </div>
@@ -294,7 +287,7 @@ const Register = () => {
                         <div className="input-group">
                           <div
                             className="input-group-addon form-control"
-                            style={{ maxWidth: "7%" }}
+                            style={{ maxWidth: "11%" }}
                           >
                             <FontAwesomeIcon icon={faLock} />
                           </div>
@@ -348,7 +341,7 @@ const Register = () => {
                         <div className="input-group">
                           <div
                             className="input-group-addon form-control"
-                            style={{ maxWidth: "7%" }}
+                            style={{ maxWidth: "11%" }}
                           >
                             <FontAwesomeIcon icon={faLock} />
                           </div>
@@ -373,15 +366,14 @@ const Register = () => {
                               : "offscreen"
                           }
                         >
-                          
                           <FontAwesomeIcon icon={faInfoCircle} />
                           Must match the first password input field.
                         </p>
                         <br />
                       </div>
-                      <div className="col-md-12">
-                        <div className="row">
-                          <div className="col-md-6">
+                      <div className=" col-md-12">
+                        <div className="row justify-content-center">
+                          <div className="col-md-8 my-auto">
                             {" "}
                             <section>
                               <p
@@ -393,16 +385,15 @@ const Register = () => {
                               </p>
                               <p>
                                 Already registered?
-                                <br />
-                                <span className="line">                                
-                                  <Link to={"/login"}>Sign In</Link>
+                                <span className="line">
+                                  <Link to={"/login"}> Sign In</Link>
                                 </span>
                               </p>
                             </section>
                           </div>
                           <div
                             style={{ textAlign: "right" }}
-                            className="col-md-6"
+                            className="col-md-4"
                           >
                             <button
                               disabled={
@@ -428,7 +419,6 @@ const Register = () => {
                   </form>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>

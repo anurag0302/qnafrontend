@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useFetchResults } from "../FetchingApi/useFetchResults";
+import { API_URL } from "../services/API_URL";
 import { Pagination } from "../services/Pgination";
 
 const Results = ({ searchTerm }: any) => {
   let { results, kFetch } = useFetchResults();
 
   useEffect(() => {
-    kFetch(`${process.env.REACT_APP_BACKEND_URL}questionsans/${searchTerm}`);
+    kFetch(`${API_URL}questionsans/${searchTerm}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 

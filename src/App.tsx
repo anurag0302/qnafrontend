@@ -20,7 +20,7 @@ function App() {
   let { transformedData, kFetch, setTransformedData } = useFetchData();
 
   return (
-    <div >
+    <div>
       <header className="App-header">
         <Header
           transformedData={transformedData}
@@ -32,34 +32,37 @@ function App() {
       </header>
       <Routes>
         {/* public routes */}
-        <Route path="login" element={<Login/>} />
-        <Route path="register" element={<Register/>} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         {/* <Route path="linkpage" element={<LinkPage/>} /> */}
-        <Route path="unauthorized" element={<Unauthorized/>} />
+        <Route path="unauthorized" element={<Unauthorized />} />
 
         {/* we want to protect these routes */}
-        <Route element={<RequireAuth allowedRoles={["User", "Admin", "Master"]}/>}>
         <Route
-          path="/"
-          element={<Home transformedData={transformedData} kFetch={kFetch} />}
-        />
-        <Route path="/Details/:id" element={<Details />} />
-        <Route path="/results" element={<Results searchTerm={searchTerm} />} />
-        
+          element={<RequireAuth allowedRoles={["User", "Admin", "Master"]} />}
+        >
+          <Route
+            path="/"
+            element={<Home transformedData={transformedData} kFetch={kFetch} />}
+          />
+          <Route path="/Details/:id" element={<Details />} />
+          <Route
+            path="/results"
+            element={<Results searchTerm={searchTerm} />}
+          />
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={["Admin","Master"]}/>}>
-        <Route path="/add" element={<AddQnA />} />
+        <Route element={<RequireAuth allowedRoles={["Admin", "Master"]} />}>
+          <Route path="/add" element={<AddQnA />} />
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={["Master"]}/>}>
-        <Route path="/master/" element={<Master />} />
+        <Route element={<RequireAuth allowedRoles={["Master"]} />}>
+          <Route path="/master/" element={<Master />} />
         </Route>
-        
+
         <Route path="*" element={<Error />} />
-        
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
