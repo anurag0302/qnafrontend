@@ -17,8 +17,8 @@ export const Home = ({ transformedData, kFetch }: any) => {
 
   useEffect(() => {
     kFetch(API_URL + "questions");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transformedData]);
+    console.log(transformedData);
+  }, []);
 
   const myStyle: any = {
     margin: "10px",
