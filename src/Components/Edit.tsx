@@ -7,7 +7,7 @@ import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../services/API_URL";
 
-export const Edit = ({ details, onEdit }: any) => {
+export const Edit = ({ details, onEdit, fetchDetails }: any) => {
   const [show, setShow] = useState(false);
   const [Question, setQuestion] = useState<React.SetStateAction<any>>();
   const [Answer, setAnswer] = useState<React.SetStateAction<string>>();
@@ -40,7 +40,8 @@ export const Edit = ({ details, onEdit }: any) => {
       second: "2-digit",
     });
     const date =
-      `${current.getDate()}/${current.getMonth() + 1
+      `${current.getDate()}/${
+        current.getMonth() + 1
       }/${current.getFullYear()}` +
       " " +
       `${currentDateTime}`;
@@ -88,20 +89,18 @@ export const Edit = ({ details, onEdit }: any) => {
       method: "put",
       body: formData,
     };
-    fetch(
-      `${API_URL}questions/${Did}`,
-      requestOptions
-    )
+    fetch(`${API_URL}questions/${Did}`, requestOptions)
       .then((response) => response)
-      .then((res) =>
+      .then(async (res) => {
         MySwal.fire({
           position: "center",
           icon: "success",
           title: '"Question Answer Edit Sucessfully!',
           showConfirmButton: false,
           timer: 1500,
-        })
-      )
+        });
+        await fetchDetails();
+      })
       .catch((error) => {
         MySwal.fire({
           icon: "error",

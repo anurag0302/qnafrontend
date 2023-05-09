@@ -6,7 +6,6 @@ import Modal from "react-bootstrap/Modal";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import { UserEdit } from "./UserEdit";
-import { useFetchDetails } from "../FetchingApi/useFetchDetails";
 import "./RadioCss.css";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../services/API_URL";
@@ -48,7 +47,7 @@ export const Users = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [masterData]);
 
-  const handleEdit = () => { };
+  const handleEdit = () => {};
 
   const handleSave = () => {
     const data = {
@@ -181,7 +180,7 @@ export const Users = () => {
                   className="form-control"
                   id="Question"
                   defaultValue={editData.fullName}
-                // readOnly
+                  // readOnly
                 />
                 <br />
 
@@ -218,9 +217,9 @@ export const Users = () => {
                     // checked={editData.rolePosition === "Admin"}
                     defaultChecked={editData.rolePosition === "Master"}
                     disabled
-                  // onChange={(e) => {
-                  //   setRole(e.target.value);
-                  // }}
+                    // onChange={(e) => {
+                    //   setRole(e.target.value);
+                    // }}
                   />{" "}
                   Master &nbsp;
                 </div>
