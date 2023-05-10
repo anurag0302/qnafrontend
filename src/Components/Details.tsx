@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { API_URL } from "../services/API_URL";
 import EditedInfo from "./EditedInfo";
+import * as DOMPurify from "dompurify";
 
 interface secData {
   question: string;
@@ -148,8 +149,13 @@ export const Details = () => {
                 className="col-lg-8 col-md-8 p-4 h-100"
                 style={{ borderRight: "5px solid black" }}
               >
-                <h3>Question: {Details.Item.question} </h3>
-                <h5>Answer: {Details.Item.answer}</h5>
+                <h3>Q: {Details.Item.question} </h3>
+                <br />
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(Details.Item.answer),
+                  }}
+                />
                 {Details.Item.imageLocation !== "null" ? (
                   <img
                     style={{ marginLeft: "20px" }}

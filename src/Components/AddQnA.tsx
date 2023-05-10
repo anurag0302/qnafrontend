@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { API_URL } from "../services/API_URL";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AddQnA = () => {
   const [Question, setQuestion] = useState("");
@@ -49,7 +51,8 @@ const AddQnA = () => {
     });
 
     const date =
-      `${current.getDate()}/${current.getMonth() + 1
+      `${current.getDate()}/${
+        current.getMonth() + 1
       }/${current.getFullYear()}` +
       " " +
       `${currentDateTime}`;
@@ -124,7 +127,8 @@ const AddQnA = () => {
                 <label htmlFor="answer" className="form-label">
                   Answer<span style={{ color: "red" }}>*</span>
                 </label>
-                <textarea
+                {/* change old input with react quill */}
+                {/* <textarea
                   rows={3}
                   className="form-control"
                   id="answer"
@@ -132,7 +136,8 @@ const AddQnA = () => {
                   onChange={(e) => {
                     setAnswer(e.target.value);
                   }}
-                />
+                /> */}
+                <ReactQuill theme="snow" value={Answer} onChange={setAnswer} />
               </div>
               <div className="my-3">
                 <label htmlFor="answer" className="form-label">

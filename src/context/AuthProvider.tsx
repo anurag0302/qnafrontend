@@ -2,13 +2,18 @@ import { createContext, useEffect, useState } from "react";
 
 const AuthContext: any = createContext({});
 
+interface IAuth {
+  id: string;
+  name: string;
+  password: string;
+  role: string;
+}
+
 export const AuthProvider: any = ({ children }: any) => {
   const [auth, setAuth]: any = useState({});
 
-  // useEffect(()=>{
-  //  setAuth({role:localStorage.getItem('token')})
-  // },[])
-   //console.log(auth,"so this is auth");
+  // console.log(auth);
+
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}

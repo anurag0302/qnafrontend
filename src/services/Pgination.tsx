@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+// import { createStyles, makeStyles, Theme } from "@material-ui/core";
 
 interface propsType {
   first: number;
@@ -7,55 +7,54 @@ interface propsType {
   currentPage: number;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    ul: {
-      listStyle: "none",
-      display: "flex",
-      marginTop: 50,
-    },
-    li: {
-      marginLeft: 5,
-    },
-    button: {
-      padding: "10px",
-      background: "none",
-      border: "none",
-      borderRadius: "20%",
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     ul: {
+//       listStyle: "none",
+//       display: "flex",
+//       marginTop: 50,
+//     },
+//     li: {
+//       marginLeft: 5,
+//     },
+//     button: {
+//       padding: "10px",
+//       background: "none",
+//       border: "none",
+//       borderRadius: "20%",
 
-      "&:hover": {
-        backgroundColor: "black",
-        color: "white",
-      },
-    },
-    spanBg: {
-      backgroundColor: "black",
-      color: "white",
-    },
-  })
-);
+//       "&:hover": {
+//         backgroundColor: "black",
+//         color: "white",
+//       },
+//     },
+//     spanBg: {
+//       backgroundColor: "black",
+//       color: "white",
+//     },
+//   })
+// );
 
 export function Pagination(props: propsType) {
   const pageNumbers: number[] = [];
-  const classStyle = useStyles();
+  // const classStyle = useStyles();
   for (let i = 1; i <= Math.ceil(props.last / props.first); i++) {
     pageNumbers.push(i);
   }
 
   return (
     <div>
-      <ul className={classStyle.ul}>
+      <ul>
         {pageNumbers.map((item) => (
-          <li key={item} className={classStyle.li}>
+          <li key={item}>
             <button
               onClick={() => {
                 props.paginate(item);
               }}
-              className={classStyle.button}
             >
               {/* {item} */}
               {item === props.currentPage ? (
-                <span className={classStyle.spanBg}>{item}</span>
+                <span>{item}</span>
               ) : (
                 <span>{item}</span>
               )}

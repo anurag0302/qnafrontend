@@ -25,9 +25,10 @@ const EditedInfo = ({ data }: any) => {
               <small>{val.modifyInfo}</small>
             </div>
             <p className="mb-1">
-              {val.answer.length > 40
+              {/* {val.answer.length > 40
                 ? val.answer.substring(0, 40) + "..."
-                : val.answer}
+                : val.answer} */}
+              display notes changes made
             </p>
             <small>by admin@akshay</small>
           </a>

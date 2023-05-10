@@ -6,11 +6,13 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../services/API_URL";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export const Edit = ({ details, onEdit, fetchDetails }: any) => {
   const [show, setShow] = useState(false);
   const [Question, setQuestion] = useState<React.SetStateAction<any>>();
-  const [Answer, setAnswer] = useState<React.SetStateAction<string>>();
+  const [Answer, setAnswer] = useState<React.SetStateAction<any>>("");
   const Did: any = details.Item.questionId;
   var SecondayData: any;
   let navigate = useNavigate();
@@ -157,14 +159,20 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
               <label>
                 <b> Answer</b>
               </label>
-              <textarea
+              {/* show quill editing area */}
+              {/* <textarea
                 className="form-control"
                 defaultValue={details.Item.answer}
                 id="Answer"
                 onChange={(e) => {
                   setAnswer(e.target.value);
                 }}
-              ></textarea>
+              ></textarea> */}
+              <ReactQuill
+                theme="snow"
+                value={details.Item.answer}
+                onChange={setAnswer}
+              />
               <label htmlFor="answer" className="form-label">
                 Select Image
               </label>
@@ -174,6 +182,8 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                 name="upload_file"
                 onChange={handleFileChange}
               />
+              <label className="my-2">Note (Changes Made)</label>
+              <textarea className="form-control" />
             </div>
           </div>
         </Modal.Body>

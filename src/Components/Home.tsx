@@ -56,17 +56,18 @@ export const Home = ({ transformedData, kFetch }: any) => {
                 <div style={cardStyle} className="card">
                   <div className="card-body">
                     <h5 className="card-title">{val.question}</h5>
-                    <p
+                    {/* answer hidden because it contains html */}
+                    {/* <p
                       className="card-text text-truncate"
                       style={{ maxWidth: "700px" }}
                     >
                       {val.answer}{" "}
-                    </p>
+                    </p> */}
                     <Link
                       style={{ textDecoration: "none" }}
                       to={`/Details/${val.questionId}`}
                     >
-                      view more
+                      Read More
                     </Link>
                   </div>
                 </div>
