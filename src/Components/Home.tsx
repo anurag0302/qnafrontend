@@ -15,16 +15,39 @@ export const Home = ({ transformedData, kFetch }: any) => {
     navigate("/login");
   };
 
+  const [sortOrder, setSortOrder] = useState("desc");
+
   useEffect(() => {
     kFetch(API_URL + "questions");
-    console.log(transformedData);
   }, []);
+
+  console.log(transformedData);
 
   const myStyle: any = {
     margin: "10px",
     textAlign: "center",
     paddingBottom: "10px",
   };
+
+  const sortData = () => {
+    if (transformedData) {
+      transformedData.sort((a: any, b: any) => {
+        let aDateArray = a.dateLog.split(",");
+        let aDate = Date.parse(aDateArray[aDateArray.length - 1]);
+        let bDateArray = b.dateLog.split(",");
+        let bDate = Date.parse(bDateArray[bDateArray.length - 1]);
+
+        if (sortOrder === "asc") {
+          return aDate > bDate ? -1 : 1;
+        }
+        if (sortOrder === "desc") {
+          return aDate < bDate ? -1 : 1;
+        }
+        return 0;
+      });
+    }
+  };
+
   const cardStyle: any = {
     borderRadius: "10px",
     backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
@@ -41,12 +64,22 @@ export const Home = ({ transformedData, kFetch }: any) => {
   const currentPost =
     transformedData && transformedData.slice(firstIndex, lastIndex);
 
+  const handleSortChange = (event: any) => {
+    setSortOrder(event.target.value);
+    //console.log("sortingOrder", event.target.value);
+    sortData();
+  };
+
   return (
     <div className="container">
       <div>
         <h1 style={myStyle}>
           Question <span style={{ color: "red" }}>&</span> Answer
         </h1>
+        <select className="my-2" value={sortOrder} onChange={handleSortChange}>
+          <option value="asc">Oldest</option>
+          <option value="desc">Latest</option>
+        </select>
       </div>
       <div className="row">
         {transformedData &&

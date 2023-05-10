@@ -17,20 +17,16 @@ const EditedInfo = ({ data }: any) => {
             style={{ maxHeight: "150px" }}
           >
             <div className="d-flex w-100 justify-content-between">
-              <h5 className="mb-1">
-                {val.question.length > 20
-                  ? val.question.substring(0, 20) + "..."
-                  : val.question}
-              </h5>
+              <h5 className="mb-1">{val.changeDesc}</h5>
               <small>{val.modifyInfo}</small>
             </div>
             <p className="mb-1">
               {/* {val.answer.length > 40
                 ? val.answer.substring(0, 40) + "..."
                 : val.answer} */}
-              display notes changes made
+              {val.editedBy}
             </p>
-            <small>by admin@akshay</small>
+            <small></small>
           </a>
         ))}
       </div>

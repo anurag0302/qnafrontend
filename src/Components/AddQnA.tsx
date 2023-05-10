@@ -5,6 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 import { API_URL } from "../services/API_URL";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import useAuth from "../hooks/useAuth";
 
 const AddQnA = () => {
   const [Question, setQuestion] = useState("");
@@ -13,6 +14,8 @@ const AddQnA = () => {
   const MySwal = withReactContent(Swal);
 
   const [image, setImage] = useState({ preview: "", data: "" });
+
+  const { auth, setAuth }: any = useAuth();
 
   // const handleInputChangeImage = (event: any) => {
   //   if (event.target.files[0] === undefined) {
@@ -63,6 +66,7 @@ const AddQnA = () => {
     const data = {
       question: Question,
       answer: Answer,
+      createdBy: auth.id,
       status: 1,
       dateLog: date,
       secondary: [],

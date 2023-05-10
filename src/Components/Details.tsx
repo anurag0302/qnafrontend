@@ -13,6 +13,7 @@ interface secData {
   question: string;
   answer: string;
   modifyInfo: string;
+  editedBy: string;
 }
 
 export const Details = () => {
@@ -150,6 +151,11 @@ export const Details = () => {
                 style={{ borderRight: "5px solid black" }}
               >
                 <h3>Q: {Details.Item.question} </h3>
+                <div>created by {Details.Item.createdBy}</div>
+                <div>
+                  last edited by{" "}
+                  {secondaryData[secondaryData.length - 1].editedBy}
+                </div>
                 <br />
                 <div
                   dangerouslySetInnerHTML={{
