@@ -5,6 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 import { API_URL } from "../services/API_URL";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import "./AddQnA.css";
 
 const AddQnA = () => {
   const [Question, setQuestion] = useState("");
@@ -13,6 +14,7 @@ const AddQnA = () => {
   const MySwal = withReactContent(Swal);
 
   const [image, setImage] = useState({ preview: "", data: "" });
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   // const handleInputChangeImage = (event: any) => {
   //   if (event.target.files[0] === undefined) {
@@ -31,11 +33,19 @@ const AddQnA = () => {
   // };
 
   const handleFileChange = (e: any) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    setImage(img);
+    // const img = {
+    //   preview: URL.createObjectURL(e.target.files[0]),
+    //   data: e.target.files[0],
+    // };
+    // setImage(img);
+    const selectedFiles = e.target.files;
+    const selectedFilesArray = Array.from(selectedFiles);
+    //console.log(selectedFilesArray);
+    const imagesArray = selectedFilesArray.map((file: any) =>
+      URL.createObjectURL(file)
+    );
+    console.log(imagesArray);
+    setSelectedImages((prevImages) => prevImages?.concat(imagesArray));
   };
 
   const handleAdd = (e: any) => {
@@ -99,6 +109,8 @@ const AddQnA = () => {
     navigate("/");
   };
 
+  const onSelectFile = () => {};
+
   return (
     <>
       <div className="container-lg mt-3">
@@ -139,28 +151,93 @@ const AddQnA = () => {
                 /> */}
                 <ReactQuill theme="snow" value={Answer} onChange={setAnswer} />
               </div>
-              <div className="my-3">
-                <label htmlFor="answer" className="form-label">
-                  Select Image
+              <div className="my-3 image__div">
+                <label htmlFor="images" className="add__image">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                    />
+                  </svg>
+                  Add Image
+                  <br />
+                  <span>(max 4 images)</span>
+                  <input
+                    type="file"
+                    name="images"
+                    id="images"
+                    onChange={handleFileChange}
+                    multiple
+                    accept="image/png , image/jpeg, image/webp"
+                  />
                 </label>
-                <input
+                {selectedImages &&
+                  selectedImages.map((image, index) => (
+                    <div className="single__image" key={index}>
+                      <img
+                        src={image}
+                        alt="uploadedImage"
+                        height={200}
+                        width={200}
+                      />
+                      <button
+                        className="image__delete"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setSelectedImages(
+                            selectedImages.filter((e) => e !== image)
+                          );
+                        }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                {/* <input
                   type="file"
                   className="form-control"
                   name="upload_file"
                   onChange={handleFileChange}
-                />
+                /> */}
               </div>
 
-              <button
-                type="button"
-                className="btn btn-primary btn-lg"
-                onClick={handleAdd}
-              >
-                Add QnA
-              </button>
+              {selectedImages?.length > 0 && selectedImages?.length > 10 ? (
+                <p>Please upload less than 10 images.</p>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-primary btn-lg"
+                  onClick={handleAdd}
+                >
+                  Add QnA
+                </button>
+              )}
             </form>
           </div>
-          <div className="col-lg-6 text-start ">
+          {/* Preview of Image to be uploaded (single) */}
+          {/* <div className="col-lg-6 text-start ">
             {image.preview !== "" ? (
               <img
                 style={{ marginLeft: "20px" }}
@@ -171,7 +248,7 @@ const AddQnA = () => {
                 height="350"
               />
             ) : null}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

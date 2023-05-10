@@ -170,7 +170,7 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
               ></textarea> */}
               <ReactQuill
                 theme="snow"
-                value={details.Item.answer}
+                defaultValue={details.Item.answer}
                 onChange={setAnswer}
               />
               <label htmlFor="answer" className="form-label">

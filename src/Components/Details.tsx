@@ -8,6 +8,8 @@ import useAuth from "../hooks/useAuth";
 import { API_URL } from "../services/API_URL";
 import EditedInfo from "./EditedInfo";
 import * as DOMPurify from "dompurify";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 interface secData {
   question: string;
@@ -157,14 +159,51 @@ export const Details = () => {
                   }}
                 />
                 {Details.Item.imageLocation !== "null" ? (
-                  <img
-                    style={{ marginLeft: "20px" }}
-                    className="previewimg"
-                    src={Details.Item.imageLocation}
-                    alt="UploadImage"
-                    width="200"
-                    height="200"
-                  />
+                  // <img
+                  //   style={{ marginLeft: "20px" }}
+                  //   className="previewimg"
+                  //   src={Details.Item.imageLocation}
+                  //   alt="UploadImage"
+                  //   width="200"
+                  //   height="200"
+                  // />
+                  <PhotoProvider>
+                    <PhotoView src={Details.Item.imageLocation}>
+                      <img
+                        src={Details.Item.imageLocation}
+                        style={{ height: "200px", width: "200px" }}
+                        alt="Uploaded_Image"
+                      />
+                    </PhotoView>
+                    <PhotoView src={Details.Item.imageLocation}>
+                      <img
+                        src={Details.Item.imageLocation}
+                        style={{ height: "200px", width: "200px" }}
+                        alt="Uploaded_Image"
+                      />
+                    </PhotoView>
+                    <PhotoView src={Details.Item.imageLocation}>
+                      <img
+                        src={Details.Item.imageLocation}
+                        style={{ height: "200px", width: "200px" }}
+                        alt="Uploaded_Image"
+                      />
+                    </PhotoView>
+                    <PhotoView src={Details.Item.imageLocation}>
+                      <img
+                        src={Details.Item.imageLocation}
+                        style={{ height: "200px", width: "200px" }}
+                        alt="Uploaded_Image"
+                      />
+                    </PhotoView>
+                    <PhotoView src={Details.Item.imageLocation}>
+                      <img
+                        src={Details.Item.imageLocation}
+                        style={{ height: "200px", width: "200px" }}
+                        alt="Uploaded_Image"
+                      />
+                    </PhotoView>
+                  </PhotoProvider>
                 ) : (
                   <></>
                 )}
