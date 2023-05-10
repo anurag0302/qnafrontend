@@ -153,8 +153,8 @@ export const Details = () => {
                 <h3>Q: {Details.Item.question} </h3>
                 <div>created by {Details.Item.createdBy}</div>
                 <div>
-                  last edited by{" "}
-                  {secondaryData[secondaryData.length - 1].editedBy}
+                  last edited by {secondaryData[0].editedBy} at{" "}
+                  {secondaryData[0].modifyInfo}
                 </div>
                 <br />
                 <div
