@@ -21,7 +21,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
     kFetch(API_URL + "questions");
   }, []);
 
-  console.log(transformedData);
+  //console.log(transformedData);
 
   const myStyle: any = {
     margin: "10px",

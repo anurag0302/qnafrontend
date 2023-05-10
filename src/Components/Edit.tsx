@@ -83,6 +83,7 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
       question: newQuestion,
       answer: newAnswer,
       createdBy: details.Item.createdBy,
+      authorRole: details.Item.authorRole,
       id: Did,
       qa: Question + " " + Answer,
       dateLog: newDate,

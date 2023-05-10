@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth";
 import { API_URL } from "../services/API_URL";
 import EditedInfo from "./EditedInfo";
 import * as DOMPurify from "dompurify";
+import useUserRoleFetch from "../hooks/useUserRoleFetch";
 
 interface secData {
   question: string;
@@ -36,7 +37,7 @@ export const Details = () => {
 
   const [Details, setDetails] = useState<React.SetStateAction<any>>();
   const [loading, setLoading] = useState(false);
-
+  const [postCreatorRole, setPostCreatorRole] = useState();
   const fetchDetails = async () => {
     setLoading(true);
     try {
@@ -47,7 +48,18 @@ export const Details = () => {
       }
       const data = await response.json();
       setDetails(data);
-      console.log(data);
+      // console.log(data);
+
+      const responseRole = await fetch(
+        `${API_URL}userinfo/${data.Item.createdBy}`
+      );
+      if (!responseRole) {
+        console.log("error");
+      }
+      const role = await responseRole.json();
+      setPostCreatorRole(role.Item.rolePosition);
+      console.log(role.Item.rolePosition);
+
       if (data.Item.secondary.length === 0) {
         setSecondary([]);
       } else {
@@ -112,75 +124,87 @@ export const Details = () => {
 
   const { auth, setAuth }: any = useAuth();
 
-  if (auth.role === "User")
-    return (
-      <>
-        {Details && (
-          <div className="container-fluid h-100">
-            <div className="row mt-3 ">
-              <div className="col-lg-8 col-md-8 p-4 h-100">
-                <h3>Question: {Details.Item.question} </h3>
-                <h5>Answer: {Details.Item.answer}</h5>
-                {Details.Item.imageLocation !== "null" ? (
-                  <img
-                    style={{ marginLeft: "20px" }}
-                    className="previewimg"
-                    src={Details.Item.imageLocation}
-                    alt="UploadImage"
-                    width="200"
-                    height="200"
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
-              {/* Edited Info and Buttons Panel does not show on User*/}
-            </div>
-          </div>
-        )}
-      </>
-    );
-  else
-    return (
-      <>
-        {Details && (
-          <div className="container-fluid h-100">
-            <div className="row mt-3 ">
-              <div
-                className="col-lg-8 col-md-8 p-4 h-100"
-                style={{ borderRight: "5px solid black" }}
-              >
-                <h3>Q: {Details.Item.question} </h3>
-                <div>created by {Details.Item.createdBy}</div>
+  // if (auth.role === "User")
+  //   return (
+  //     <>
+  //       {Details && (
+  //         <div className="container-fluid h-100">
+  //           <div className="row mt-3 ">
+  //             <div className="col-lg-8 col-md-8 p-4 h-100">
+  //               <h3>Question: {Details.Item.question} </h3>
+  //               <div
+  //                 dangerouslySetInnerHTML={{
+  //                   __html: DOMPurify.sanitize(Details.Item.answer),
+  //                 }}
+  //               />
+  //               {Details.Item.imageLocation !== "null" ? (
+  //                 <img
+  //                   style={{ marginLeft: "20px" }}
+  //                   className="previewimg"
+  //                   src={Details.Item.imageLocation}
+  //                   alt="UploadImage"
+  //                   width="200"
+  //                   height="200"
+  //                 />
+  //               ) : (
+  //                 <></>
+  //               )}
+  //             </div>
+  //             {/* Edited Info and Buttons Panel does not show on User*/}
+  //           </div>
+  //         </div>
+  //       )}
+  //     </>
+  //   );
+  // else
+
+  return (
+    <>
+      {Details && (
+        <div className="container-fluid h-100">
+          <div className="row mt-3 ">
+            <div
+              className="col-lg-8 col-md-8 p-4 h-100"
+              style={{ borderRight: "5px solid black" }}
+            >
+              <h3>Q: {Details.Item.question} </h3>
+              <div>created by {Details.Item.createdBy}</div>
+              {secondaryData?.length > 0 ? (
                 <div>
-                  last edited by {secondaryData[0].editedBy} at{" "}
-                  {secondaryData[0].modifyInfo}
+                  last edited by {secondaryData[0]?.editedBy} at{" "}
+                  {secondaryData[0]?.modifyInfo}
                 </div>
-                <br />
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(Details.Item.answer),
-                  }}
+              ) : (
+                <></>
+              )}
+
+              <br />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(Details.Item.answer),
+                }}
+              />
+              {Details.Item.imageLocation !== "null" ? (
+                <img
+                  style={{ marginLeft: "20px" }}
+                  className="previewimg"
+                  src={Details.Item.imageLocation}
+                  alt="UploadImage"
+                  width="200"
+                  height="200"
                 />
-                {Details.Item.imageLocation !== "null" ? (
-                  <img
-                    style={{ marginLeft: "20px" }}
-                    className="previewimg"
-                    src={Details.Item.imageLocation}
-                    alt="UploadImage"
-                    width="200"
-                    height="200"
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
+              ) : (
+                <></>
+              )}
+            </div>
 
-              {/* Edited Info and Buttons Panel */}
+            {/* Edited Info and Buttons Panel */}
 
+            {auth.id === Details.Item.createdBy ||
+            (auth.role === "Admin" && postCreatorRole === "User") ? (
               <div className="col-lg-4 col-md-4 d-flex flex-column justify-content-center align-items-center">
                 <div className="card text-center bg-light text-dark mb-4 col-sm-6 col-md-10">
-                  <div className="card-header">Admin Panel</div>
+                  <div className="card-header">Actions</div>
                   <div className="card-body">
                     <Edit
                       details={Details}
@@ -262,11 +286,14 @@ export const Details = () => {
                   </div>
                 )}
               </div>
-            </div>
+            ) : (
+              <></>
+            )}
           </div>
-        )}
-      </>
-    );
+        </div>
+      )}
+    </>
+  );
 };
 
 //old return for edited info

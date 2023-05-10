@@ -67,6 +67,7 @@ const AddQnA = () => {
       question: Question,
       answer: Answer,
       createdBy: auth.id,
+      authorRole: auth.role,
       status: 1,
       dateLog: date,
       secondary: [],
