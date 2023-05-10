@@ -52,7 +52,9 @@ function App() {
           />
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={["Admin", "Master"]} />}>
+        <Route
+          element={<RequireAuth allowedRoles={["Admin", "Master", "User"]} />}
+        >
           <Route path="/add" element={<AddQnA />} />
         </Route>
 

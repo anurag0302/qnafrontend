@@ -1,4 +1,5 @@
 // import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import "./Pagination.css";
 
 interface propsType {
   first: number;
@@ -43,7 +44,7 @@ export function Pagination(props: propsType) {
   }
 
   return (
-    <div>
+    <div className="pagination__div">
       <ul>
         {pageNumbers.map((item) => (
           <li key={item}>

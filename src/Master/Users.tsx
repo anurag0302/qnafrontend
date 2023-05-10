@@ -210,7 +210,8 @@ export const Users = () => {
                     }}
                   />{" "}
                   Admin &nbsp;
-                  <input
+                  {/* Removed redundant code */}
+                  {/* <input
                     type="radio"
                     value="Master"
                     name="role"
@@ -221,7 +222,7 @@ export const Users = () => {
                     //   setRole(e.target.value);
                     // }}
                   />{" "}
-                  Master &nbsp;
+                  Master &nbsp; */}
                 </div>
               </div>
             </div>

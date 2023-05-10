@@ -89,14 +89,15 @@ export const Header = ({ setSearchTerm }: any) => {
               </button>
             </Link>
 
-            <Link to="/add" style={{ textDecoration: "none", color: "black" }}>
+            {/* Master cannot Add posts now */}
+            {/* <Link to="/add" style={{ textDecoration: "none", color: "black" }}>
               <button
                 className="btn btnHeader"
                 style={{ backgroundColor: "rgb( 255, 153, 0)", margin: "10px" }}
               >
                 Add New
               </button>
-            </Link>
+            </Link> */}
             <button
               className="btn btnHeader"
               style={{ backgroundColor: "rgb( 255, 153, 0)", margin: "10px" }}
@@ -108,7 +109,7 @@ export const Header = ({ setSearchTerm }: any) => {
         </div>
       </>
     );
-  else if (auth.role === "Admin")
+  else
     return (
       <>
         <div
@@ -124,10 +125,10 @@ export const Header = ({ setSearchTerm }: any) => {
               style={{
                 textDecoration: "none",
                 color: "black",
-                marginLeft: "10px",
+                margin: "10px",
               }}
             >
-              Team2{" "}
+              <b>QnA-Portal</b>
             </Link>
           </h4>
 
@@ -176,99 +177,6 @@ export const Header = ({ setSearchTerm }: any) => {
               Sign Out
             </button>
           </div>
-        </div>
-      </>
-    );
-  else if (auth.role === "User")
-    return (
-      <div
-        className="container-fluid d-flex  align-items-center justify-content-between header"
-        style={{
-          backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
-        }}
-      >
-        <h4>
-          {" "}
-          <Link
-            to="/"
-            style={{
-              textDecoration: "none",
-              color: "black",
-              marginLeft: "10px",
-            }}
-          >
-            Team2{" "}
-          </Link>
-        </h4>
-
-        <div className="d-flex align-items-center">
-          <form className="form-inline my-2 my-lg-1 d-flex mx-5">
-            <input
-              className="form-control mr-sm-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              onChange={(event) => setTemp(event.target.value)}
-              // onChange={searchHandle}
-            />
-            <button className="btn" type="submit" onClick={searchHandle}>
-              <img
-                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E"
-                alt="search"
-              />
-            </button>
-          </form>
-
-          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
-            <button
-              className="btn btnHeader"
-              style={{ backgroundColor: "rgb( 255, 153, 0)", margin: "10px" }}
-            >
-              Home
-            </button>
-          </Link>
-
-          {/* Master Portal not visible to Admin and Users. */}
-
-          {/* <Link to="/add" style={{ textDecoration: "none", color: "black" }}>
-              <button
-                className="btn btnHeader"
-                style={{ backgroundColor: "rgb( 255, 153, 0)", margin: "10px" }}
-              >
-                Add New
-              </button>
-            </Link> */}
-          <button
-            className="btn btnHeader"
-            style={{ backgroundColor: "rgb( 255, 153, 0)", margin: "10px" }}
-            onClick={logout}
-          >
-            Sign Out
-          </button>
-        </div>
-      </div>
-    );
-  else
-    return (
-      <>
-        <div
-          className="container-fluid d-flex  align-items-center justify-content-between header p-2"
-          style={{
-            backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
-          }}
-        >
-          <h4>
-            <Link
-              to="/"
-              style={{
-                textDecoration: "none",
-                color: "black",
-                marginLeft: "10px",
-              }}
-            >
-              Team2
-            </Link>
-          </h4>
         </div>
       </>
     );

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../services/API_URL";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import useAuth from "../hooks/useAuth";
 
 export const Edit = ({ details, onEdit, fetchDetails }: any) => {
   const [show, setShow] = useState(false);
@@ -19,8 +20,11 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
   const MySwal = withReactContent(Swal);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [changeDesc, setChangeDesc] = useState();
 
   const [image, setImage] = useState({ preview: "", data: "" });
+
+  const { auth, setAuth }: any = useAuth();
 
   const handleFileChange = (e: any) => {
     const img = {
@@ -56,6 +60,8 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
         answer: details.Item.answer,
         modifyInfo: date,
         editId: editId,
+        editedBy: auth.id,
+        changeDesc: changeDesc,
         imgdata: details.Item.imageLocation,
       },
       ...details.Item.secondary,
@@ -76,6 +82,8 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
     const data = {
       question: newQuestion,
       answer: newAnswer,
+      createdBy: details.Item.createdBy,
+      authorRole: details.Item.authorRole,
       id: Did,
       qa: Question + " " + Answer,
       dateLog: newDate,
@@ -183,7 +191,11 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                 onChange={handleFileChange}
               />
               <label className="my-2">Note (Changes Made)</label>
-              <textarea className="form-control" />
+              <textarea
+                className="form-control"
+                defaultValue={changeDesc}
+                onChange={(e: any) => setChangeDesc(e.target.value)}
+              />
             </div>
           </div>
         </Modal.Body>
