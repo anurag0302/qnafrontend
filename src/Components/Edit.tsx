@@ -13,7 +13,9 @@ import useAuth from "../hooks/useAuth";
 export const Edit = ({ details, onEdit, fetchDetails }: any) => {
   const [show, setShow] = useState(false);
   const [Question, setQuestion] = useState<React.SetStateAction<any>>();
-  const [Answer, setAnswer] = useState<React.SetStateAction<any>>("");
+  const [Answer, setAnswer] = useState<React.SetStateAction<any>>(
+    details.Item.answer
+  );
   const Did: any = details.Item.questionId;
   var SecondayData: any;
   let navigate = useNavigate();
@@ -26,12 +28,34 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
 
   const { auth, setAuth }: any = useAuth();
 
+  interface image {
+    preview: string;
+    data: string;
+  }
+
+  //console.log(details);
+
+  const [selectedImages, setSelectedImages] = useState<image[]>([]);
+
   const handleFileChange = (e: any) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    setImage(img);
+    // const img = {
+    //   preview: URL.createObjectURL(e.target.files[0]),
+    //   data: e.target.files[0],
+    // };
+    // setImage(img);
+    const selectedFiles = e.target.files;
+    const selectedFilesArray = Array.from(selectedFiles);
+    //console.log(selectedFilesArray);
+
+    const imagesArray = selectedFilesArray.map((file: any) => {
+      return {
+        preview: URL.createObjectURL(file),
+        data: file,
+      };
+    });
+    
+    // console.log(imagesArray);
+    setSelectedImages(imagesArray);
   };
 
   const handleSave = () => {
@@ -79,6 +103,7 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
       // setAnswer(details.Item.answer);
       newAnswer = details.Item.answer;
     }
+
     const data = {
       question: newQuestion,
       answer: newAnswer,
@@ -91,8 +116,14 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
       imgLocation: details.Item.imageLocation,
     };
 
+    console.log("images", selectedImages);
+
     const formData = new FormData();
-    formData.append("image", image.data);
+    // formData.append("image", image.data);
+    for (let i = 0; i < selectedImages.length; i++) {
+      console.log(selectedImages[i]);
+      formData.append("images", selectedImages[i].data);
+    }
     formData.append("data", JSON.stringify(data));
 
     const requestOptions = {
@@ -120,7 +151,8 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
       });
 
     // onEdit();
-    navigate(`/Details/${Did}`);
+     navigate(`/Details/${Did}`);
+    //navigate("/");
     // window.location.reload();
   };
 
@@ -181,15 +213,34 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                 defaultValue={details.Item.answer}
                 onChange={setAnswer}
               />
-              <label htmlFor="answer" className="form-label">
-                Select Image
+              <br></br>
+              <label htmlFor="images" className="add__image">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                  />
+                </svg>
+                Add Image
+                <br />
+                <span>(max 4 images)</span>
+                <input
+                  type="file"
+                  name="images"
+                  id="images"
+                  onChange={handleFileChange}
+                  multiple
+                  accept="image/png , image/jpeg, image/webp"
+                />
               </label>
-              <input
-                type="file"
-                className="form-control"
-                name="upload_file"
-                onChange={handleFileChange}
-              />
               <label className="my-2">Note (Changes Made)</label>
               <textarea
                 className="form-control"

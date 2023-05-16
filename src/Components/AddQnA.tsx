@@ -14,8 +14,13 @@ const AddQnA = () => {
   let navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
-  const [image, setImage] = useState({ preview: "", data: "" });
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  // const [image, setImage] = useState({ preview: "", data: "" });
+
+  interface image {
+    preview: string;
+    data: string;
+  }
+  const [selectedImages, setSelectedImages] = useState<image[]>([]);
 
   const { auth, setAuth }: any = useAuth();
 
@@ -44,11 +49,14 @@ const AddQnA = () => {
     const selectedFiles = e.target.files;
     const selectedFilesArray = Array.from(selectedFiles);
     //console.log(selectedFilesArray);
-    const imagesArray = selectedFilesArray.map((file: any) =>
-      URL.createObjectURL(file)
-    );
-    console.log(imagesArray);
-    setSelectedImages((prevImages) => prevImages?.concat(imagesArray));
+    const imagesArray = selectedFilesArray.map((file: any) => {
+      return {
+        preview: URL.createObjectURL(file),
+        data: file,
+      };
+    });
+    // console.log(imagesArray);
+    setSelectedImages(imagesArray);
   };
 
   const handleAdd = (e: any) => {
@@ -71,7 +79,16 @@ const AddQnA = () => {
       `${currentDateTime}`;
 
     const formData = new FormData();
-    formData.append("image", image.data);
+
+    for (let i = 0; i < selectedImages.length; i++) {
+      formData.append("images", selectedImages[i].data);
+    }
+
+    //formData.append("image", selectedImages[0].data);
+
+    //  console.log("new",selectedImages[0]);
+    //  console.log("json",JSON.stringify(selectedImages[0]));
+    // console.log("old",image.data);
 
     const data = {
       question: Question,
@@ -188,7 +205,7 @@ const AddQnA = () => {
                   selectedImages.map((image, index) => (
                     <div className="single__image" key={index}>
                       <img
-                        src={image}
+                        src={image.preview}
                         alt="uploadedImage"
                         height={200}
                         width={200}

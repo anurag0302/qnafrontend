@@ -38,10 +38,9 @@ export const Details = () => {
   // const { Details, kFetch, setDetails } = useFetchDetails();
 
   const [Details, setDetails] = useState<React.SetStateAction<any>>();
-  const [loading, setLoading] = useState(false);
+
   const [postCreatorRole, setPostCreatorRole] = useState();
   const fetchDetails = async () => {
-    setLoading(true);
     try {
       const response = await fetch(`${API_URL}questions/${id}`);
 
@@ -50,7 +49,8 @@ export const Details = () => {
       }
       const data = await response.json();
       setDetails(data);
-      // console.log(data);
+
+      //console.log(data);
 
       const responseRole = await fetch(
         `${API_URL}userinfo/${data.Item.createdBy}`
@@ -66,16 +66,20 @@ export const Details = () => {
         setSecondary([]);
       } else {
         setSecondary(data.Item.secondary);
-        console.log(secondaryData);
+        //console.log(secondaryData);
       }
     } catch (err) {
       console.log("error", err);
     }
-    setLoading(false);
   };
+
+  // useEffect(() => {
+  //   fetchDetails();
+  // }, []);
+
   useEffect(() => {
     fetchDetails();
-  }, []);
+  }, [Details]);
 
   const handleEdit = () => {
     // console.log("details", Details);
@@ -196,41 +200,17 @@ export const Details = () => {
                 //   height="200"
                 // />
                 <PhotoProvider>
-                  <PhotoView src={Details.Item.imageLocation}>
-                    <img
-                      src={Details.Item.imageLocation}
-                      style={{ height: "200px", width: "200px" }}
-                      alt="Uploaded_Image"
-                    />
-                  </PhotoView>
-                  <PhotoView src={Details.Item.imageLocation}>
-                    <img
-                      src={Details.Item.imageLocation}
-                      style={{ height: "200px", width: "200px" }}
-                      alt="Uploaded_Image"
-                    />
-                  </PhotoView>
-                  <PhotoView src={Details.Item.imageLocation}>
-                    <img
-                      src={Details.Item.imageLocation}
-                      style={{ height: "200px", width: "200px" }}
-                      alt="Uploaded_Image"
-                    />
-                  </PhotoView>
-                  <PhotoView src={Details.Item.imageLocation}>
-                    <img
-                      src={Details.Item.imageLocation}
-                      style={{ height: "200px", width: "200px" }}
-                      alt="Uploaded_Image"
-                    />
-                  </PhotoView>
-                  <PhotoView src={Details.Item.imageLocation}>
-                    <img
-                      src={Details.Item.imageLocation}
-                      style={{ height: "200px", width: "200px" }}
-                      alt="Uploaded_Image"
-                    />
-                  </PhotoView>
+                  {Details.Item.imageLocation.map((image: any) => {
+                    return (
+                      <PhotoView src={image}>
+                        <img
+                          src={image}
+                          style={{ height: "200px", width: "200px" }}
+                          alt="Uploaded_Image"
+                        />
+                      </PhotoView>
+                    );
+                  })}
                 </PhotoProvider>
               ) : (
                 <></>
