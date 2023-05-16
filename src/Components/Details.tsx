@@ -8,7 +8,6 @@ import useAuth from "../hooks/useAuth";
 import { API_URL } from "../services/API_URL";
 import EditedInfo from "./EditedInfo";
 import * as DOMPurify from "dompurify";
-import useUserRoleFetch from "../hooks/useUserRoleFetch";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
@@ -79,7 +78,7 @@ export const Details = () => {
 
   useEffect(() => {
     fetchDetails();
-  }, [Details]);
+  }, []);
 
   const handleEdit = () => {
     // console.log("details", Details);
@@ -292,7 +291,10 @@ export const Details = () => {
                   </button> */}
                 {/* </div> */}
                 {secondaryData.length > 0 ? (
-                  <div className="container d-flex justify-content-center">
+                  <div
+                    className="container d-flex justify-content-center"
+                    style={{ paddingBottom: "100px" }}
+                  >
                     <ul className="list-group">
                       <EditedInfo data={secondaryData} />
                     </ul>

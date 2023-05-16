@@ -9,6 +9,7 @@ import { API_URL } from "../services/API_URL";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import useAuth from "../hooks/useAuth";
+import { PhotoProvider, PhotoView } from "react-photo-view";
 
 export const Edit = ({ details, onEdit, fetchDetails }: any) => {
   const [show, setShow] = useState(false);
@@ -214,6 +215,34 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                 onChange={setAnswer}
               />
               <br></br>
+              {details.Item.imageLocation !== "null" ? (
+                // <img
+                //   style={{ marginLeft: "20px" }}
+                //   className="previewimg"
+                //   src={Details.Item.imageLocation}
+                //   alt="UploadImage"
+                //   width="200"
+                //   height="200"
+                // />
+                <PhotoProvider>
+                  {details.Item.imageLocation.map((image: any) => {
+                    return (
+                      <PhotoView src={image}>
+                        <img
+                          src={image}
+                          style={{ height: "200px", width: "200px" }}
+                          alt="Uploaded_Image"
+                        />
+                      </PhotoView>
+                    );
+                  })}
+                </PhotoProvider>
+              ) : (
+                <></>
+              )}
+
+<br/><br/>
+              
               <label htmlFor="images" className="add__image">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -232,6 +261,7 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                 Add Image
                 <br />
                 <span>(max 4 images)</span>
+                
                 <input
                   type="file"
                   name="images"
