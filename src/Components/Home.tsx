@@ -20,7 +20,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
 
   useEffect(() => {
     kFetch(API_URL + "questions");
-  }, []);
+  }, [transformedData]);
 
   //console.log(transformedData);
 

@@ -78,7 +78,7 @@ export const Details = () => {
 
   useEffect(() => {
     fetchDetails();
-  }, []);
+  }, [Details]);
 
   const handleEdit = () => {
     // console.log("details", Details);
