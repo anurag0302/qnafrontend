@@ -14,10 +14,12 @@ const Login = () => {
 
   const emailRef: any = useRef();
   const errRef: any = useRef();
+  const errRole: any = useRef();
 
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [errRoleMsg, setErrRoleMsg] = useState("");
   const [resp1, setResp1] = useState<any>();
   //const [success, setSuccess] = useState(false);
 
@@ -42,6 +44,8 @@ const Login = () => {
 
         setEmail("");
         setPwd("");
+
+        console.log(role, "check");
 
         navigate(from, { replace: true });
       } catch (err: any) {
@@ -74,6 +78,7 @@ const Login = () => {
 
   useEffect(() => {
     setErrMsg("");
+    setErrRoleMsg("");
   }, [email, pwd]);
 
   const handleSubmit = async (e: any) => {
@@ -120,12 +125,21 @@ const Login = () => {
       //   role
       // );
 
-      setEmail("");
-      setPwd("");
       //setSuccess(true);
-      localStorage.setItem("token", response.data.token);
 
-      navigate(from, { replace: true });
+      if (role === "Default") {
+        setErrRoleMsg("You Don't Have Permission to Login");
+        errRole.current.focus();
+      } else {
+        localStorage.setItem("token", response.data.token);
+        setEmail("");
+        setPwd("");
+        navigate(from, { replace: true });
+      }
+
+      console.log(role, "handlesubmit");
+
+      // navigate(from, { replace: true });
     } catch (err: any) {
       if (!err.response) {
         setErrMsg("No Server Response");
@@ -160,6 +174,13 @@ const Login = () => {
             aria-live="assertive"
           >
             {errMsg}
+          </p>
+          <p
+            ref={errRole}
+            className={errRoleMsg ? "errmsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {errRoleMsg}
           </p>
 
           <div className="row justify-content-center">

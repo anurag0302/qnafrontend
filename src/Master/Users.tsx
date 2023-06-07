@@ -190,6 +190,17 @@ export const Users = () => {
                 <div>
                   <input
                     type="radio"
+                    value="Default"
+                    name="role"
+                    // checked={editData.rolePosition === "Admin"}
+                    defaultChecked={editData.rolePosition === "Default"}
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                    }}
+                  />{" "}
+                  Default &nbsp;
+                  <input
+                    type="radio"
                     value="User"
                     name="role"
                     // checked={editData.rolePosition === "User"}

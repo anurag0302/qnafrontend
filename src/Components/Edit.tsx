@@ -11,14 +11,13 @@ import "react-quill/dist/quill.snow.css";
 import useAuth from "../hooks/useAuth";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 
-export const Edit = ({ details, onEdit, fetchDetails }: any) => {
+export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
   const [show, setShow] = useState(false);
   const [Question, setQuestion] = useState<React.SetStateAction<any>>();
   const [Answer, setAnswer] = useState<React.SetStateAction<any>>(
     details.Item.answer
   );
   const Did: any = details.Item.questionId;
-  var SecondayData: any;
   let navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const handleClose = () => setShow(false);
@@ -48,18 +47,29 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
     const selectedFilesArray = Array.from(selectedFiles);
     //console.log(selectedFilesArray);
 
-    const imagesArray = selectedFilesArray.map((file: any) => {
+    let imagesArray = selectedFilesArray.map((file: any) => {
       return {
         preview: URL.createObjectURL(file),
         data: file,
       };
     });
-    
+
+    if (selectedImages.length > 0) {
+      const newImagesArray = selectedImages.map((file: any) => {
+        console.log(file);
+        return {
+          preview: file.preview,
+          data: file.data,
+        };
+      });
+      imagesArray = [...imagesArray, ...newImagesArray];
+    }
+
     // console.log(imagesArray);
     setSelectedImages(imagesArray);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     var newAnswer: any = Answer;
     var newQuestion: any = Question;
     var editId: any = details.Item.secondary.length + 1;
@@ -131,7 +141,7 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
       method: "put",
       body: formData,
     };
-    fetch(`${API_URL}questions/${Did}`, requestOptions)
+    await fetch(`${API_URL}questions/${Did}`, requestOptions)
       .then((response) => response)
       .then(async (res) => {
         MySwal.fire({
@@ -152,9 +162,10 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
       });
 
     // onEdit();
-     navigate(`/Details/${Did}`);
+    onEditSuccess();
+    navigate(`/Details/${Did}`);
     //navigate("/");
-    // window.location.reload();
+    //window.location.reload();
   };
 
   return (
@@ -236,13 +247,25 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                       </PhotoView>
                     );
                   })}
+                  {selectedImages &&
+                    selectedImages.map((image, index) => (
+                      <div className="single__image" key={index}>
+                        <img
+                          src={image.preview}
+                          alt="uploadedImage"
+                          height={200}
+                          width={200}
+                        />
+                      </div>
+                    ))}
                 </PhotoProvider>
               ) : (
                 <></>
               )}
 
-<br/><br/>
-              
+              <br />
+              <br />
+
               <label htmlFor="images" className="add__image">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -261,7 +284,6 @@ export const Edit = ({ details, onEdit, fetchDetails }: any) => {
                 Add Image
                 <br />
                 <span>(max 4 images)</span>
-                
                 <input
                   type="file"
                   name="images"

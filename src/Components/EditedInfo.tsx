@@ -3,7 +3,7 @@ import { Accordion } from "react-bootstrap";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const EditedInfo = ({ data }: any) => {
-  console.log(data);
+  //console.log(data);
   return (
     <>
       <h5 className="mb-3">Previous Edits </h5>

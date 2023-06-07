@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useFetchResults } from "../FetchingApi/useFetchResults";
 import { API_URL } from "../services/API_URL";
 import { Pagination } from "../services/Pgination";
+import DOMPurify from "dompurify";
 
 const Results = ({ searchTerm }: any) => {
   let { results, kFetch } = useFetchResults();
@@ -51,7 +52,11 @@ const Results = ({ searchTerm }: any) => {
                       className="card-text text-truncate"
                       style={{ maxWidth: "700px" }}
                     >
-                      {val.answer.S}{" "}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(val.answer.S),
+                        }}
+                      />{" "}
                     </p>
                     <Link
                       style={{ textDecoration: "none" }}

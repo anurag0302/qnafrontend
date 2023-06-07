@@ -38,6 +38,8 @@ export const Details = () => {
 
   const [Details, setDetails] = useState<React.SetStateAction<any>>();
 
+  const [reloadKey, setReloadKey] = useState(0);
+
   const [postCreatorRole, setPostCreatorRole] = useState();
   const fetchDetails = async () => {
     try {
@@ -59,7 +61,7 @@ export const Details = () => {
       }
       const role = await responseRole.json();
       setPostCreatorRole(role.Item.rolePosition);
-      console.log(role.Item.rolePosition);
+      //console.log(role.Item.rolePosition);
 
       if (data.Item.secondary.length === 0) {
         setSecondary([]);
@@ -78,7 +80,13 @@ export const Details = () => {
 
   useEffect(() => {
     fetchDetails();
-  }, [Details]);
+  }, [reloadKey]);
+
+  const handleEditSuccess = async () => {
+    console.log("success");
+    await fetchDetails();
+    setReloadKey((prevKey) => prevKey + 1); // Update the reloadKey to trigger component reload
+  };
 
   const handleEdit = () => {
     // console.log("details", Details);
@@ -204,7 +212,11 @@ export const Details = () => {
                       <PhotoView src={image}>
                         <img
                           src={image}
-                          style={{ height: "200px", width: "200px" }}
+                          style={{
+                            height: "200px",
+                            width: "200px",
+                            margin: "10px",
+                          }}
                           alt="Uploaded_Image"
                         />
                       </PhotoView>
@@ -228,6 +240,7 @@ export const Details = () => {
                       details={Details}
                       onEdit={handleEdit}
                       fetchDetails={fetchDetails}
+                      onEditSuccess={handleEditSuccess}
                     />
                     <button
                       className="btn btn-danger w-100 mb-3"

@@ -20,7 +20,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
 
   useEffect(() => {
     kFetch(API_URL + "questions");
-  }, [transformedData]);
+  }, []);
 
   //console.log(transformedData);
 
@@ -33,10 +33,12 @@ export const Home = ({ transformedData, kFetch }: any) => {
   const sortData = () => {
     if (transformedData) {
       transformedData.sort((a: any, b: any) => {
+        console.log(a);
         let aDateArray = a.dateLog.split(",");
         let aDate = Date.parse(aDateArray[aDateArray.length - 1]);
         let bDateArray = b.dateLog.split(",");
         let bDate = Date.parse(bDateArray[bDateArray.length - 1]);
+        //console.log(aDate);
 
         if (sortOrder === "asc") {
           return aDate > bDate ? -1 : 1;
@@ -47,6 +49,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
         return 0;
       });
     }
+    //console.log(transformedData);
   };
 
   const cardStyle: any = {
@@ -65,10 +68,10 @@ export const Home = ({ transformedData, kFetch }: any) => {
   const currentPost =
     transformedData && transformedData.slice(firstIndex, lastIndex);
 
-  const handleSortChange = (event: any) => {
+  const handleSortChange = async (event: any) => {
     setSortOrder(event.target.value);
     //console.log("sortingOrder", event.target.value);
-    sortData();
+    await sortData();
   };
 
   return (
@@ -117,7 +120,14 @@ export const Home = ({ transformedData, kFetch }: any) => {
                     </div>
                     {/* <img src={imgUrl} className="card-img-top" alt="..." /> */}
                     <div className="card-body">
-                      <h5 className="card-title">
+                      <h5
+                        className="card-title"
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
                         {val.question.substring(0, 20)}...
                       </h5>
                       {/* <p className="card-text">{desc.substring(0, 20)}...</p> */}

@@ -49,13 +49,25 @@ const AddQnA = () => {
     const selectedFiles = e.target.files;
     const selectedFilesArray = Array.from(selectedFiles);
     //console.log(selectedFilesArray);
-    const imagesArray = selectedFilesArray.map((file: any) => {
+    let imagesArray = selectedFilesArray.map((file: any) => {
+      console.log(file);
       return {
         preview: URL.createObjectURL(file),
         data: file,
       };
     });
+    if (selectedImages.length > 0) {
+      const newImagesArray = selectedImages.map((file: any) => {
+        console.log(file);
+        return {
+          preview: file.preview,
+          data: file.data,
+        };
+      });
+      imagesArray = [...imagesArray, ...newImagesArray];
+    }
     // console.log(imagesArray);
+
     setSelectedImages(imagesArray);
   };
 
@@ -100,6 +112,7 @@ const AddQnA = () => {
       secondary: [],
     };
 
+    console.log(date);
     formData.append("data", JSON.stringify(data));
 
     const requestOptions = {

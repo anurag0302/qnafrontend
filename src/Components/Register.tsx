@@ -105,7 +105,7 @@ const Register = () => {
           id: email.toLowerCase(),
           fullName: name,
           password: pwd,
-          rolePosition: "User",
+          rolePosition: "Default",
         }),
         {
           headers: { "Content-Type": "application/json" },
