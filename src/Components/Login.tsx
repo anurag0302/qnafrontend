@@ -20,7 +20,7 @@ const Login = () => {
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [errRoleMsg, setErrRoleMsg] = useState("");
-  const [resp1, setResp1] = useState<any>();
+
   //const [success, setSuccess] = useState(false);
 
   //=====================================================
@@ -101,7 +101,6 @@ const Login = () => {
 
       //console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
-      const accessToken = response?.data?.accessToken;
 
       // var role = response.data.Item.rolePosition;
       // var name = response.data.Item.fullName;
