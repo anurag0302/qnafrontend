@@ -312,7 +312,6 @@ const AddQnA = () => {
                                 style={{
                                   height: "120px",
                                   width: "120px",
-                                  margin: "0 10px",
                                 }}
                                 alt="Uploaded_Image"
                               />

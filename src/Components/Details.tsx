@@ -135,23 +135,32 @@ export const Details = () => {
     // setDetails([]);
   };
   const MySwal = withReactContent(Swal);
-  const handleDelete = () => {
+  const handleDelete = async () => {
     const requestOptions = {
       method: "delete",
       headers: { "Content-Type": "application/json" },
     };
-    fetch(`${API_URL}questions/${id}`, requestOptions)
+    MySwal.fire({
+      title: "Deleting...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
+    await fetch(`${API_URL}questions/${id}`, requestOptions)
       .then((response) => response)
-      .then((res) =>
+      .then((res) => {
+        MySwal.close();
         MySwal.fire({
           position: "center",
           icon: "success",
           title: '"Question Answer Delete!',
           showConfirmButton: false,
           timer: 1500,
-        })
-      )
+        });
+      })
       .catch((error) => {
+        MySwal.close();
         MySwal.fire({
           icon: "error",
           title: "Oops...",
