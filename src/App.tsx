@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import AddQnA from "./Components/AddQnA";
 import { Error } from "./Components/Error";
-import Footer from "./Components/Footer";
 import { Header } from "./Components/Header";
 import Results from "./Components/Results";
 import { Home } from "./Components/Home";
@@ -18,7 +17,6 @@ import RequireAuth from "./Components/RequireAuth";
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   let { transformedData, kFetch, setTransformedData } = useFetchData();
-
 
   return (
     <div>

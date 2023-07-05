@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,11 +9,15 @@ import { API_URL } from "../services/API_URL";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import useAuth from "../hooks/useAuth";
-import { PhotoProvider, PhotoView } from "react-photo-view";
+import ImageContainer from "./ImageContainer";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
   const [show, setShow] = useState(false);
+  const [reload, setReload] = useState(0);
+  const [dbImages, setDbImages] = useState([]);
   const [Question, setQuestion] = useState<React.SetStateAction<any>>();
+  const [selectedImages, setSelectedImages] = useState<image[]>([]);
   const [Answer, setAnswer] = useState<React.SetStateAction<any>>(
     details.Item.answer
   );
@@ -21,21 +25,26 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
   let navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = async () => {
+    await fetchDetails();
+    setShow(true);
+  };
   const [changeDesc, setChangeDesc] = useState();
 
-  const [image, setImage] = useState({ preview: "", data: "" });
-
-  const { auth, setAuth }: any = useAuth();
+  const { auth }: any = useAuth();
 
   interface image {
     preview: string;
     data: string;
   }
 
-  //console.log(details);
+  useEffect(() => {
+    setDbImages(details.Item.imageLocation);
+  }, [details]);
 
-  const [selectedImages, setSelectedImages] = useState<image[]>([]);
+  console.log(dbImages, "dbImages");
+
+  // console.log(details.Item.imageLocation, "Location");
 
   const handleFileChange = (e: any) => {
     // const img = {
@@ -43,30 +52,43 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
     //   data: e.target.files[0],
     // };
     // setImage(img);
-    const selectedFiles = e.target.files;
-    const selectedFilesArray = Array.from(selectedFiles);
-    //console.log(selectedFilesArray);
 
-    let imagesArray = selectedFilesArray.map((file: any) => {
-      return {
-        preview: URL.createObjectURL(file),
-        data: file,
-      };
-    });
+    if (selectedImages.length < 4) {
+      const selectedFiles = e.target.files;
+      const selectedFilesArray = Array.from(selectedFiles);
+      //console.log(selectedFilesArray);
 
-    if (selectedImages.length > 0) {
-      const newImagesArray = selectedImages.map((file: any) => {
-        console.log(file);
+      let imagesArray = selectedFilesArray.map((file: any) => {
         return {
-          preview: file.preview,
-          data: file.data,
+          preview: URL.createObjectURL(file),
+          data: file,
+          name: file.name,
+          type: file.type,
         };
       });
-      imagesArray = [...imagesArray, ...newImagesArray];
-    }
 
-    // console.log(imagesArray);
-    setSelectedImages(imagesArray);
+      if (selectedImages.length > 0) {
+        const newImagesArray = selectedImages.map((file: any) => {
+          console.log(file);
+          return {
+            preview: file.preview,
+            data: file.data,
+            name: file.name,
+            type: file.type,
+          };
+        });
+        imagesArray = [...imagesArray, ...newImagesArray];
+      }
+
+      // console.log(imagesArray);
+      if (imagesArray.length <= 4) {
+        setSelectedImages(imagesArray);
+      } else {
+        toast.error("Maximum 4 images can be uploaded");
+      }
+    } else {
+      toast.error("Maximum 4 images can be uploaded");
+    }
   };
 
   const handleSave = async () => {
@@ -115,6 +137,7 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
       newAnswer = details.Item.answer;
     }
 
+    console.log(dbImages, "dbImages");
     const data = {
       question: newQuestion,
       answer: newAnswer,
@@ -124,15 +147,15 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
       qa: Question + " " + Answer,
       dateLog: newDate,
       secondary: secondary,
-      imgLocation: details.Item.imageLocation,
+      imgLocation: dbImages,
     };
 
-    console.log("images", selectedImages);
+    //console.log("images", selectedImages);
 
     const formData = new FormData();
     // formData.append("image", image.data);
     for (let i = 0; i < selectedImages.length; i++) {
-      console.log(selectedImages[i]);
+      //console.log(selectedImages[i]);
       formData.append("images", selectedImages[i].data);
     }
     formData.append("data", JSON.stringify(data));
@@ -141,9 +164,17 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
       method: "put",
       body: formData,
     };
+    MySwal.fire({
+      title: "Uploading...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        MySwal.showLoading();
+      },
+    });
     await fetch(`${API_URL}questions/${Did}`, requestOptions)
       .then((response) => response)
       .then(async (res) => {
+        MySwal.close();
         MySwal.fire({
           position: "center",
           icon: "success",
@@ -154,6 +185,7 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
         await fetchDetails();
       })
       .catch((error) => {
+        MySwal.close();
         MySwal.fire({
           icon: "error",
           title: "Oops...",
@@ -162,7 +194,9 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
       });
 
     // onEdit();
+    setReload(reload + 1);
     onEditSuccess();
+    setSelectedImages([]);
     navigate(`/Details/${Did}`);
     //navigate("/");
     //window.location.reload();
@@ -170,6 +204,7 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
 
   return (
     <>
+      <ToastContainer></ToastContainer>
       <Button className="btn w-100 mb-3 text-light" onClick={handleShow}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -235,30 +270,12 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
                 //   width="200"
                 //   height="200"
                 // />
-                <PhotoProvider>
-                  {details.Item.imageLocation.map((image: any) => {
-                    return (
-                      <PhotoView src={image}>
-                        <img
-                          src={image}
-                          style={{ height: "200px", width: "200px" }}
-                          alt="Uploaded_Image"
-                        />
-                      </PhotoView>
-                    );
-                  })}
-                  {selectedImages &&
-                    selectedImages.map((image, index) => (
-                      <div className="single__image" key={index}>
-                        <img
-                          src={image.preview}
-                          alt="uploadedImage"
-                          height={200}
-                          width={200}
-                        />
-                      </div>
-                    ))}
-                </PhotoProvider>
+                <ImageContainer
+                  dbImages={dbImages}
+                  setDbImages={setDbImages}
+                  selectedImages={selectedImages}
+                  setSelectedImages={setSelectedImages}
+                />
               ) : (
                 <></>
               )}
@@ -281,16 +298,16 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
                     d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
                   />
                 </svg>
-                Add Image
+                Add Files
                 <br />
-                <span>(max 4 images)</span>
+                <span>(max 4 Files)</span>
                 <input
                   type="file"
                   name="images"
                   id="images"
                   onChange={handleFileChange}
                   multiple
-                  accept="image/png , image/jpeg, image/webp"
+                  accept="*/*"
                 />
               </label>
               <label className="my-2">Note (Changes Made)</label>

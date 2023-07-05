@@ -22,7 +22,7 @@ const REGISTER_URL = "userinfo";
 
 const Register = () => {
   const userRef: any = useRef();
-  const emailRef: any = useRef();
+  // const emailRef: any = useRef();
   const errRef: any = useRef();
 
   const [name, setName] = useState("");
@@ -42,12 +42,12 @@ const Register = () => {
   const [cpwdFocus, setCpwdFocus] = useState(false);
 
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success] = useState(false);
 
   let navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
-  const inp = {};
+  
 
   useEffect(() => {
     userRef.current.focus();
@@ -99,7 +99,7 @@ const Register = () => {
     //setSuccess(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         REGISTER_URL,
         JSON.stringify({
           id: email.toLowerCase(),

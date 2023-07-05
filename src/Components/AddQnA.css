@@ -37,6 +37,8 @@
   cursor: pointer;
 }
 .single__image {
+  display: flexbox;
+  float: inline-start;
 }
 .image__delete {
   margin-top: 5px;

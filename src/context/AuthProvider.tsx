@@ -1,13 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 const AuthContext: any = createContext({});
-
-interface IAuth {
-  id: string;
-  name: string;
-  password: string;
-  role: string;
-}
 
 export const AuthProvider: any = ({ children }: any) => {
   const [auth, setAuth]: any = useState({});

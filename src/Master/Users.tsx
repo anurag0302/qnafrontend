@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFetchMaster } from "../FetchingApi/useFetchMaster";
 // import { UserEdit } from "./UserEdit";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
-import { UserEdit } from "./UserEdit";
 import "./RadioCss.css";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../services/API_URL";
@@ -47,7 +46,7 @@ export const Users = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [masterData]);
 
-  const handleEdit = () => {};
+  // const handleEdit = () => {};
 
   const handleSave = () => {
     const data = {
@@ -81,6 +80,7 @@ export const Users = () => {
         name.rolePosition = role;
         // console.log("found");
       }
+      return name;
     });
     // console.log("master Data after edit", masterData);
     setShow(false);

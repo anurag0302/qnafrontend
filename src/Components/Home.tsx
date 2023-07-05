@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { API_URL } from "../services/API_URL";
 import { Pagination } from "../services/Pgination";
 import "./Home.css";
 
 export const Home = ({ transformedData, kFetch }: any) => {
-  const { auth, setAuth }: any = useAuth();
-  const navigate = useNavigate();
+  const { auth }: any = useAuth();
+  // const navigate = useNavigate();
 
-  const logout = async () => {
-    // if used in more components, this should be in context
-    // axios to /logout endpoint
-    setAuth({});
-    navigate("/login");
-  };
+  // const logout = async () => {
+  //   // if used in more components, this should be in context
+  //   // axios to /logout endpoint
+  //   setAuth({});
+  //   navigate("/login");
+  // };
 
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     kFetch(API_URL + "questions");
-  }, []);
+  }, [kFetch]);
 
   //console.log(transformedData);
 
-  const myStyle: any = {
-    margin: "10px",
-    textAlign: "center",
-    paddingBottom: "10px",
-  };
+  // const myStyle: any = {
+  //   margin: "10px",
+  //   textAlign: "center",
+  //   paddingBottom: "10px",
+  // };
 
   const sortData = () => {
     if (transformedData) {
@@ -52,11 +52,11 @@ export const Home = ({ transformedData, kFetch }: any) => {
     //console.log(transformedData);
   };
 
-  const cardStyle: any = {
-    borderRadius: "10px",
-    backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
-    height: "165px",
-  };
+  // const cardStyle: any = {
+  //   borderRadius: "10px",
+  //   backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
+  //   height: "165px",
+  // };
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
   const paginate = (item: number) => {

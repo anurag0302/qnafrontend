@@ -10,6 +10,14 @@ import EditedInfo from "./EditedInfo";
 import * as DOMPurify from "dompurify";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import {
+  faFile,
+  faFileExcel,
+  faFilePdf,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./Details.css";
 
 interface secData {
   question: string;
@@ -23,17 +31,17 @@ export const Details = () => {
   let navigate = useNavigate();
   //edited info / previous edits is stored here
   const [secondaryData, setSecondary] = useState<secData[]>([]);
-  const Toast = Swal.mixin({
-    toast: true,
-    position: "top-end",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: false,
-    didOpen: (toast) => {
-      toast.addEventListener("mouseenter", Swal.stopTimer);
-      toast.addEventListener("mouseleave", Swal.resumeTimer);
-    },
-  });
+  // const Toast = Swal.mixin({
+  //   toast: true,
+  //   position: "top-end",
+  //   showConfirmButton: false,
+  //   timer: 3000,
+  //   timerProgressBar: false,
+  //   didOpen: (toast) => {
+  //     toast.addEventListener("mouseenter", Swal.stopTimer);
+  //     toast.addEventListener("mouseleave", Swal.resumeTimer);
+  //   },
+  // });
   // const { Details, kFetch, setDetails } = useFetchDetails();
 
   const [Details, setDetails] = useState<React.SetStateAction<any>>();
@@ -69,18 +77,52 @@ export const Details = () => {
         setSecondary(data.Item.secondary);
         //console.log(secondaryData);
       }
+      //console.log(data);
     } catch (err) {
       console.log("error", err);
     }
   };
 
-  // useEffect(() => {
-  //   fetchDetails();
-  // }, []);
+  useEffect(() => {
+    //console.log("reloaded");
+  }, [reloadKey]);
 
   useEffect(() => {
-    fetchDetails();
-  }, [reloadKey]);
+    const fetchDetail = async () => {
+      try {
+        const response = await fetch(`${API_URL}questions/${id}`);
+
+        if (!response) {
+          console.log("error");
+        }
+        const data = await response.json();
+        setDetails(data);
+
+        //console.log(data);
+
+        const responseRole = await fetch(
+          `${API_URL}userinfo/${data.Item.createdBy}`
+        );
+        if (!responseRole) {
+          console.log("error");
+        }
+        const role = await responseRole.json();
+        setPostCreatorRole(role.Item.rolePosition);
+        //console.log(role.Item.rolePosition);
+
+        if (data.Item.secondary.length === 0) {
+          setSecondary([]);
+        } else {
+          setSecondary(data.Item.secondary);
+          //console.log(secondaryData);
+        }
+        //console.log(data);
+      } catch (err) {
+        console.log("error", err);
+      }
+    };
+    fetchDetail();
+  }, [id, reloadKey]);
 
   const handleEditSuccess = async () => {
     console.log("success");
@@ -119,23 +161,23 @@ export const Details = () => {
     navigate("/");
   };
 
-  const showEditedInfo = () => {
-    // setDateLog(Details.Item.dateLog.split(","));
-    if (Details.Item.secondary.length === 0) {
-      Toast.fire({
-        icon: "error",
-        title: "No Edit History found",
-      });
-    } else {
-      // console.log(Details.Item.secondary);
-      // setSecondary((result) => [...result, ...Details.Item.secondary]);
-      setSecondary(Details.Item.secondary);
-      //setValue(Details.Item.secondary)
-      // console.log(secondaryData);
-    }
-  };
+  // const showEditedInfo = () => {
+  //   // setDateLog(Details.Item.dateLog.split(","));
+  //   if (Details.Item.secondary.length === 0) {
+  //     Toast.fire({
+  //       icon: "error",
+  //       title: "No Edit History found",
+  //     });
+  //   } else {
+  //     // console.log(Details.Item.secondary);
+  //     // setSecondary((result) => [...result, ...Details.Item.secondary]);
+  //     setSecondary(Details.Item.secondary);
+  //     //setValue(Details.Item.secondary)
+  //     // console.log(secondaryData);
+  //   }
+  // };
 
-  const { auth, setAuth }: any = useAuth();
+  const { auth }: any = useAuth();
 
   // if (auth.role === "User")
   //   return (
@@ -171,15 +213,33 @@ export const Details = () => {
   //   );
   // else
 
+  // const handleImageRemove = (image: any) => {
+  //   // console.log(image.toString());
+  //   // console.log(Details.Item.imageLocation);
+  //   const data = Details.Item.imageLocation.filter((img: any) => img !== image);
+  //   const newDetails = Details;
+  //   newDetails.Item.imageLocation = data;
+  //   setDetails(newDetails);
+  //   console.log(Details);
+  // };
+  const handleDownload = (fileUrl: any, fileName: string) => {
+    const link = document.createElement("a");
+    link.href = fileUrl;
+
+    link.download = fileName;
+
+    // Programmatically trigger the click event
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       {Details && (
         <div className="container-fluid h-100">
           <div className="row mt-3 ">
-            <div
-              className="col-lg-8 col-md-8 p-4 h-100"
-              style={{ borderRight: "5px solid black" }}
-            >
+            <div className="col-lg-8 col-md-8 p-4 h-100">
               <h3>Q: {Details.Item.question} </h3>
               <div>created by {Details.Item.createdBy}</div>
               {secondaryData?.length > 0 ? (
@@ -207,21 +267,131 @@ export const Details = () => {
                 //   height="200"
                 // />
                 <PhotoProvider>
-                  {Details.Item.imageLocation.map((image: any) => {
-                    return (
-                      <PhotoView src={image}>
-                        <img
-                          src={image}
-                          style={{
-                            height: "200px",
-                            width: "200px",
-                            margin: "10px",
-                          }}
-                          alt="Uploaded_Image"
-                        />
-                      </PhotoView>
-                    );
-                  })}
+                  <div>
+                    {Details.Item.imageLocation.map((file: any, index: any) => {
+                      const FileType = () => {
+                        const fileExtension = file
+                          .substring(file.lastIndexOf(".") + 1)
+                          .toLowerCase()
+                          .toString();
+                        //console.log(fileExtension);
+
+                        return fileExtension;
+                      };
+                      const fltype = FileType();
+                      //console.log(FileType());
+                      if (
+                        fltype === "png" ||
+                        fltype === "jpeg" ||
+                        fltype === "jpg"
+                      ) {
+                        //console.log(file);
+                        return (
+                          <div
+                            className="single__image"
+                            style={{
+                              display: "inline-flex",
+                              flexDirection: "column",
+                              verticalAlign: "bottom",
+                              margin: "10px",
+                            }}
+                            key={index}
+                          >
+                            <PhotoView src={file}>
+                              <img
+                                src={file}
+                                style={{
+                                  height: "150px",
+                                  width: "150px",
+                                }}
+                                alt="Uploaded_Image"
+                              />
+                            </PhotoView>
+                          </div>
+                        );
+                      } else if (
+                        fltype === "mp4" ||
+                        fltype === "mov" ||
+                        fltype === "avi" ||
+                        fltype === "mkv"
+                      ) {
+                        return (
+                          <div
+                            key={index}
+                            style={{
+                              display: "inline-flex",
+                              flexDirection: "column",
+                              verticalAlign: "bottom",
+                              margin: "10px",
+                            }}
+                          >
+                            <video controls width="272" height="150">
+                              <source src={file} type="video/mp4" />
+                            </video>
+                          </div>
+                        );
+                      } else {
+                        // Helper function to get the file icon based on file type
+                        const getFileIcon = (
+                          fileType: string
+                        ): IconDefinition => {
+                          // Define the mapping of file types to FA icons
+                          const iconMap: { [key: string]: IconDefinition } = {
+                            pdf: faFilePdf,
+                            xlsx: faFileExcel,
+                            xls: faFileExcel,
+                            // Add more file types and their respective FA icons
+                          };
+
+                          // Return the FA icon based on the file type
+                          return iconMap[fileType] || faFile;
+                        };
+                        // Split the URL by "/"
+                        const urlParts = file.split("/");
+
+                        // Get the last part of the URL
+                        const lastPart = urlParts[urlParts.length - 1];
+
+                        // Decode the URL-encoded string
+                        const decodedString = decodeURIComponent(
+                          lastPart.replace("%20", " ")
+                        );
+
+                        // Extract the original filename
+                        const originalFilename: any =
+                          decodedString.split("?")[0];
+
+                        const fileName = originalFilename.substring(36);
+
+                        return (
+                          <div
+                            className="single__image"
+                            key={index}
+                            style={{
+                              display: "inline-flex",
+                              flexDirection: "column",
+                              verticalAlign: "bottom",
+                              margin: "10px",
+                            }}
+                          >
+                            <div
+                              onClick={() => handleDownload(file, fileName)}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <span>
+                                <FontAwesomeIcon
+                                  className="fa-6x"
+                                  icon={getFileIcon(fltype)}
+                                />
+                                <br></br>
+                                {fileName}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
                 </PhotoProvider>
               ) : (
                 <></>
@@ -232,7 +402,10 @@ export const Details = () => {
 
             {auth.id === Details.Item.createdBy ||
             (auth.role === "Admin" && postCreatorRole === "User") ? (
-              <div className="col-lg-4 col-md-4 d-flex flex-column justify-content-center align-items-center">
+              <div
+                className="col-lg-4 col-md-4 d-flex flex-column justify-content-center align-items-center"
+                style={{ borderLeft: "5px solid black" }}
+              >
                 <div className="card text-center bg-light text-dark mb-4 col-sm-6 col-md-10">
                   <div className="card-header">Actions</div>
                   <div className="card-body">
