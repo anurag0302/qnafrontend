@@ -172,15 +172,9 @@ const ImageContainer = ({
                 margin: "10px",
               }}
             >
-              <div>
-                <span>
-                  <FontAwesomeIcon
-                    className="fa-6x"
-                    icon={getFileIcon(fltype)}
-                  />
-                  {fileName}
-                </span>
-              </div>
+              <FontAwesomeIcon className="fa-6x" icon={getFileIcon(fltype)} />
+              {fileName}
+
               <button
                 className="image__delete"
                 onClick={(e) => {
@@ -329,12 +323,12 @@ const ImageContainer = ({
                   margin: "10px",
                 }}
               >
-                <div>
-                  <span>
-                    <FontAwesomeIcon icon={getFileIcon(file.type)} />
-                    {file.name}
-                  </span>
-                </div>
+                <FontAwesomeIcon
+                  className="fa-6x"
+                  icon={getFileIcon(file.type)}
+                />
+                {file.name}
+
                 <button
                   className="image__delete"
                   onClick={(e) => {
