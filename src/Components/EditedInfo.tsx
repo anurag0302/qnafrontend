@@ -75,12 +75,7 @@ const EditedInfo = ({ data }: any) => {
                     ) {
                       return (
                         <div key={index}>
-                          <video
-                            controls
-                            width="162"
-                            height="100"
-                            style={{ marginTop: "60px" }}
-                          >
+                          <video controls width="162" height="100">
                             <source src={file} type="video/mp4" />
                           </video>
                         </div>

@@ -59,8 +59,6 @@ export const Details = () => {
       const data = await response.json();
       setDetails(data);
 
-      //console.log(data);
-
       const responseRole = await fetch(
         `${API_URL}userinfo/${data.Item.createdBy}`
       );
@@ -98,7 +96,7 @@ export const Details = () => {
         const data = await response.json();
         setDetails(data);
 
-        //console.log(data);
+        console.log(data);
 
         const responseRole = await fetch(
           `${API_URL}userinfo/${data.Item.createdBy}`
@@ -135,9 +133,13 @@ export const Details = () => {
     // setDetails([]);
   };
   const MySwal = withReactContent(Swal);
+
   const handleDelete = async () => {
+    const s3keys = Details.Item.s3Keys;
+
     const requestOptions = {
       method: "delete",
+      body: JSON.stringify({ s3keys }),
       headers: { "Content-Type": "application/json" },
     };
     MySwal.fire({
@@ -147,6 +149,7 @@ export const Details = () => {
         MySwal.showLoading();
       },
     });
+
     await fetch(`${API_URL}questions/${id}`, requestOptions)
       .then((response) => response)
       .then((res) => {

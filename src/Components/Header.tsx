@@ -144,7 +144,7 @@ export const Header = ({ setSearchTerm }: any) => {
             <></>
           ) : (
             <div className="d-flex align-items-center">
-              {location.pathname === "/" ? (
+              {location.pathname === "/" || location.pathname === "/results" ? (
                 <form className="form-inline my-2 my-lg-1 d-flex mx-5">
                   <input
                     className="form-control mr-sm-2"

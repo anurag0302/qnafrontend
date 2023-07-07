@@ -42,7 +42,7 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
     setDbImages(details.Item.imageLocation);
   }, [details]);
 
-  console.log(dbImages, "dbImages");
+  //console.log(dbImages, "dbImages");
 
   // console.log(details.Item.imageLocation, "Location");
 
