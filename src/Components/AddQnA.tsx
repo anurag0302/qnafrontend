@@ -24,93 +24,22 @@ const AddQnA = () => {
   let navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
-  // const [image, setImage] = useState({ preview: "", data: "" });
-
   interface image {
     preview: string;
     data: string;
   }
   const [selectedAllFiles, setSelectedAllFiles] = useState<image[]>([]);
 
-  // const [seperatedImages, setSeperatedImages] = useState<image[]>([]);
-  // const [seperatedVideos, setSeperatedVideos] = useState<image[]>([]);
-  // const [seperatedOther, setSeperatedOther] = useState<image[]>([]);
-
   const { auth }: any = useAuth();
 
-  // const handleInputChangeImage = (event: any) => {
-  //   if (event.target.files[0] === undefined) {
-  //     setuserInfo({
-  //       ...userInfo,
-  //       image: "",
-  //       filepreview: "",
-  //     });
-  //   } else {
-  //     setuserInfo({
-  //       ...userInfo,
-  //       image: event.target.files[0],
-  //       filepreview: URL.createObjectURL(event.target.files[0]),
-  //     });
-  //   }
-  // };
-
   const handleFileChange = (e: any) => {
-    // const img = {
-    //   preview: URL.createObjectURL(e.target.files[0]),
-    //   data: e.target.files[0],
-    // };
-    // setImage(img);
     console.log(e.target.files);
-    // const separateFiles = () => {
-    //   const fileList = Array.from(e.target.files);
-    //   var imageFiles: any = [];
-    //   var excelFiles: any = [];
-    //   var pdfFiles: any = [];
-    //   var videoFiles: any = [];
-
-    //   fileList.map((file: any) => {
-    //     if (file.type.startsWith("image")) {
-    //       imageFiles.push(file);
-    //     } else if (
-    //       file.type ===
-    //         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-    //       file.type === "application/vnd.ms-excel"
-    //     ) {
-    //       excelFiles.push(file);
-    //     } else if (file.type === "application/pdf") {
-    //       pdfFiles.push(file);
-    //     } else if (file.type.startsWith("video")) {
-    //       videoFiles.push(file);
-    //     }
-    //     return file;
-    //   });
-
-    //   return {
-    //     images: imageFiles,
-    //     excel: excelFiles,
-    //     pdf: pdfFiles,
-    //     video: videoFiles,
-    //   };
-    // };
-
-    // const separatedFiles = separateFiles();
-
-    // const setAllFiles = () => {
-    //   let images = separatedFiles.images.map((img: any) => {
-    //     return {
-    //       preview: URL.createObjectURL(img),
-    //       data: img,
-    //     };
-    //   });
-    //   setSeperatedImages(images);
-    // };
 
     if (selectedAllFiles.length < 4) {
       const selectedFiles = e.target.files;
       const selectedFilesArray = Array.from(selectedFiles);
-      //console.log(selectedFilesArray);
+
       let imagesArray = selectedFilesArray.map((file: any) => {
-        //console.log(file);
         return {
           preview: URL.createObjectURL(file),
           data: file,
@@ -120,7 +49,6 @@ const AddQnA = () => {
       });
       if (selectedAllFiles.length > 0) {
         const newImagesArray = selectedAllFiles.map((file: any) => {
-          //console.log(file);
           return {
             preview: file.preview,
             data: file.data,
@@ -166,12 +94,6 @@ const AddQnA = () => {
       console.log(selectedAllFiles[i].data);
       formData.append("images", selectedAllFiles[i].data);
     }
-
-    //formData.append("image", selectedAllFiles[0].data);
-
-    //  console.log("new",selectedAllFiles[0]);
-    //  console.log("json",JSON.stringify(selectedAllFiles[0]));
-    // console.log("old",image.data);
 
     const data = {
       question: Question,
@@ -260,16 +182,7 @@ const AddQnA = () => {
                 <label htmlFor="answer" className="form-label">
                   Answer<span style={{ color: "red" }}>*</span>
                 </label>
-                {/* change old input with react quill */}
-                {/* <textarea
-                  rows={3}
-                  className="form-control"
-                  id="answer"
-                  value={Answer}
-                  onChange={(e) => {
-                    setAnswer(e.target.value);
-                  }}
-                /> */}
+
                 <ReactQuill theme="snow" value={Answer} onChange={setAnswer} />
               </div>
               <div className="my-3 image__div">
@@ -378,19 +291,15 @@ const AddQnA = () => {
                           </div>
                         );
                       } else {
-                        // Helper function to get the file icon based on file type
                         const getFileIcon = (
                           fileType: string
                         ): IconDefinition => {
-                          // Define the mapping of file types to FA icons
                           const iconMap: { [key: string]: IconDefinition } = {
                             "application/pdf": faFilePdf,
                             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                               faFileExcel,
-                            // Add more file types and their respective FA icons
                           };
 
-                          // Return the FA icon based on the file type
                           return iconMap[fileType] || faFile;
                         };
                         return (
@@ -439,12 +348,6 @@ const AddQnA = () => {
                       }
                     })}
                 </PhotoProvider>
-                {/* <input
-                  type="file"
-                  className="form-control"
-                  name="upload_file"
-                  onChange={handleFileChange}
-                /> */}
               </div>
 
               {selectedAllFiles?.length > 0 && selectedAllFiles?.length > 10 ? (
@@ -460,19 +363,6 @@ const AddQnA = () => {
               )}
             </form>
           </div>
-          {/* Preview of Image to be uploaded (single) */}
-          {/* <div className="col-lg-6 text-start ">
-            {image.preview !== "" ? (
-              <img
-                style={{ marginLeft: "20px" }}
-                className="previewimg"
-                src={image.preview}
-                alt="UploadImage"
-                width="350"
-                height="350"
-              />
-            ) : null}
-          </div> */}
         </div>
       </div>
     </>

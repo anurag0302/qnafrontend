@@ -7,28 +7,12 @@ import "./Home.css";
 
 export const Home = ({ transformedData, kFetch }: any) => {
   const { auth }: any = useAuth();
-  // const navigate = useNavigate();
-
-  // const logout = async () => {
-  //   // if used in more components, this should be in context
-  //   // axios to /logout endpoint
-  //   setAuth({});
-  //   navigate("/login");
-  // };
 
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     kFetch(API_URL + "questions");
   }, [kFetch]);
-
-  //console.log(transformedData);
-
-  // const myStyle: any = {
-  //   margin: "10px",
-  //   textAlign: "center",
-  //   paddingBottom: "10px",
-  // };
 
   const sortData = () => {
     if (transformedData) {
@@ -38,7 +22,6 @@ export const Home = ({ transformedData, kFetch }: any) => {
         let aDate = Date.parse(aDateArray[aDateArray.length - 1]);
         let bDateArray = b.dateLog.split(",");
         let bDate = Date.parse(bDateArray[bDateArray.length - 1]);
-        //console.log(aDate);
 
         if (sortOrder === "asc") {
           return aDate > bDate ? -1 : 1;
@@ -49,14 +32,8 @@ export const Home = ({ transformedData, kFetch }: any) => {
         return 0;
       });
     }
-    //console.log(transformedData);
   };
 
-  // const cardStyle: any = {
-  //   borderRadius: "10px",
-  //   backgroundImage: "linear-gradient(to right, #F0E68C , #FBCEB1)",
-  //   height: "165px",
-  // };
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
   const paginate = (item: number) => {
@@ -93,20 +70,6 @@ export const Home = ({ transformedData, kFetch }: any) => {
           {transformedData &&
             currentPost.map((val: any, key: any) => {
               return (
-                // <div className="col-lg-4 mb-4" key={val.questionId}>
-                //   <div style={cardStyle} className="card">
-                //     <div className="card-body">
-                //       <h5 className="card-title">{val.question}</h5>
-                //       <Link
-                //         style={{ textDecoration: "none" }}
-                //         to={`/Details/${val.questionId}`}
-                //       >
-                //         Read More
-                //       </Link>
-                //     </div>
-                //   </div>
-                // </div>
-
                 <div className="col" key={val.questionId}>
                   <div
                     className="card p-0"
@@ -118,7 +81,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
                     <div className="card-header text-secondary">
                       {val.createdBy}
                     </div>
-                    {/* <img src={imgUrl} className="card-img-top" alt="..." /> */}
+
                     <div className="card-body">
                       <h5
                         className="card-title"
@@ -130,7 +93,7 @@ export const Home = ({ transformedData, kFetch }: any) => {
                       >
                         {val.question.substring(0, 20)}...
                       </h5>
-                      {/* <p className="card-text">{desc.substring(0, 20)}...</p> */}
+
                       <Link
                         style={{ textDecoration: "none" }}
                         to={`/Details/${val.questionId}`}

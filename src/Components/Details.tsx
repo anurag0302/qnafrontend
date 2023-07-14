@@ -29,20 +29,8 @@ interface secData {
 export const Details = () => {
   const { id } = useParams();
   let navigate = useNavigate();
-  //edited info / previous edits is stored here
+
   const [secondaryData, setSecondary] = useState<secData[]>([]);
-  // const Toast = Swal.mixin({
-  //   toast: true,
-  //   position: "top-end",
-  //   showConfirmButton: false,
-  //   timer: 3000,
-  //   timerProgressBar: false,
-  //   didOpen: (toast) => {
-  //     toast.addEventListener("mouseenter", Swal.stopTimer);
-  //     toast.addEventListener("mouseleave", Swal.resumeTimer);
-  //   },
-  // });
-  // const { Details, kFetch, setDetails } = useFetchDetails();
 
   const [Details, setDetails] = useState<React.SetStateAction<any>>();
 
@@ -67,23 +55,18 @@ export const Details = () => {
       }
       const role = await responseRole.json();
       setPostCreatorRole(role.Item.rolePosition);
-      //console.log(role.Item.rolePosition);
 
       if (data.Item.secondary.length === 0) {
         setSecondary([]);
       } else {
         setSecondary(data.Item.secondary);
-        //console.log(secondaryData);
       }
-      //console.log(data);
     } catch (err) {
       console.log("error", err);
     }
   };
 
-  useEffect(() => {
-    //console.log("reloaded");
-  }, [reloadKey]);
+  useEffect(() => {}, [reloadKey]);
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -106,15 +89,12 @@ export const Details = () => {
         }
         const role = await responseRole.json();
         setPostCreatorRole(role.Item.rolePosition);
-        //console.log(role.Item.rolePosition);
 
         if (data.Item.secondary.length === 0) {
           setSecondary([]);
         } else {
           setSecondary(data.Item.secondary);
-          //console.log(secondaryData);
         }
-        //console.log(data);
       } catch (err) {
         console.log("error", err);
       }
@@ -125,13 +105,9 @@ export const Details = () => {
   const handleEditSuccess = async () => {
     console.log("success");
     await fetchDetails();
-    setReloadKey((prevKey) => prevKey + 1); // Update the reloadKey to trigger component reload
+    setReloadKey((prevKey) => prevKey + 1);
   };
 
-  const handleEdit = () => {
-    // console.log("details", Details);
-    // setDetails([]);
-  };
   const MySwal = withReactContent(Swal);
 
   const handleDelete = async () => {
@@ -173,67 +149,8 @@ export const Details = () => {
     navigate("/");
   };
 
-  // const showEditedInfo = () => {
-  //   // setDateLog(Details.Item.dateLog.split(","));
-  //   if (Details.Item.secondary.length === 0) {
-  //     Toast.fire({
-  //       icon: "error",
-  //       title: "No Edit History found",
-  //     });
-  //   } else {
-  //     // console.log(Details.Item.secondary);
-  //     // setSecondary((result) => [...result, ...Details.Item.secondary]);
-  //     setSecondary(Details.Item.secondary);
-  //     //setValue(Details.Item.secondary)
-  //     // console.log(secondaryData);
-  //   }
-  // };
-
   const { auth }: any = useAuth();
 
-  // if (auth.role === "User")
-  //   return (
-  //     <>
-  //       {Details && (
-  //         <div className="container-fluid h-100">
-  //           <div className="row mt-3 ">
-  //             <div className="col-lg-8 col-md-8 p-4 h-100">
-  //               <h3>Question: {Details.Item.question} </h3>
-  //               <div
-  //                 dangerouslySetInnerHTML={{
-  //                   __html: DOMPurify.sanitize(Details.Item.answer),
-  //                 }}
-  //               />
-  //               {Details.Item.imageLocation !== "null" ? (
-  //                 <img
-  //                   style={{ marginLeft: "20px" }}
-  //                   className="previewimg"
-  //                   src={Details.Item.imageLocation}
-  //                   alt="UploadImage"
-  //                   width="200"
-  //                   height="200"
-  //                 />
-  //               ) : (
-  //                 <></>
-  //               )}
-  //             </div>
-  //             {/* Edited Info and Buttons Panel does not show on User*/}
-  //           </div>
-  //         </div>
-  //       )}
-  //     </>
-  //   );
-  // else
-
-  // const handleImageRemove = (image: any) => {
-  //   // console.log(image.toString());
-  //   // console.log(Details.Item.imageLocation);
-  //   const data = Details.Item.imageLocation.filter((img: any) => img !== image);
-  //   const newDetails = Details;
-  //   newDetails.Item.imageLocation = data;
-  //   setDetails(newDetails);
-  //   console.log(Details);
-  // };
   const handleDownload = (fileUrl: any, fileName: string) => {
     const link = document.createElement("a");
     link.href = fileUrl;
@@ -410,8 +327,6 @@ export const Details = () => {
               )}
             </div>
 
-            {/* Edited Info and Buttons Panel */}
-
             {auth.id === Details.Item.createdBy ||
             (auth.role === "Admin" && postCreatorRole === "User") ? (
               <div
@@ -423,7 +338,6 @@ export const Details = () => {
                   <div className="card-body">
                     <Edit
                       details={Details}
-                      onEdit={handleEdit}
                       fetchDetails={fetchDetails}
                       onEditSuccess={handleEditSuccess}
                     />

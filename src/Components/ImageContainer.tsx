@@ -8,24 +8,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 
+interface image {
+  preview: string;
+  data: string;
+  name: string;
+  type: string;
+}
+
+type ImageContainerProps = {
+  dbImages: string[];
+  setDbImages: (images: string[]) => void;
+  selectedImages: image[];
+  setSelectedImages: (images: image[]) => void;
+};
+
 const ImageContainer = ({
   dbImages,
   setDbImages,
   selectedImages,
   setSelectedImages,
-}: any) => {
-  //   const [dbImages, setDbImages] = useState(imageLocation);
+}: ImageContainerProps) => {
   useEffect(() => {}, [dbImages, selectedImages]);
+  console.log(selectedImages);
 
   return (
     <PhotoProvider>
-      {dbImages.map((file: any, index: any) => {
+      {dbImages.map((file: string, index: any) => {
         const FileType = () => {
           const fileExtension = file
             .substring(file.lastIndexOf(".") + 1)
             .toLowerCase()
             .toString();
-          //console.log(fileExtension);
 
           return fileExtension;
         };
@@ -133,31 +146,24 @@ const ImageContainer = ({
             </div>
           );
         } else {
-          // Helper function to get the file icon based on file type
           const getFileIcon = (fileType: string): IconDefinition => {
-            // Define the mapping of file types to FA icons
             const iconMap: { [key: string]: IconDefinition } = {
               pdf: faFilePdf,
               xlsx: faFileExcel,
               xls: faFileExcel,
-              // Add more file types and their respective FA icons
             };
 
-            // Return the FA icon based on the file type
             return iconMap[fileType] || faFile;
           };
-          // Split the URL by "/"
+
           const urlParts = file.split("/");
 
-          // Get the last part of the URL
           const lastPart = urlParts[urlParts.length - 1];
 
-          // Decode the URL-encoded string
           const decodedString = decodeURIComponent(
             lastPart.replace("%20", " ")
           );
 
-          // Extract the original filename
           const originalFilename: any = decodedString.split("?")[0];
 
           const fileName = originalFilename.substring(36);
@@ -207,7 +213,7 @@ const ImageContainer = ({
         }
       })}
       {selectedImages &&
-        selectedImages.map((file: any, index: any) => {
+        selectedImages.map((file: image, index: any) => {
           if (file.type.startsWith("image")) {
             return (
               <div

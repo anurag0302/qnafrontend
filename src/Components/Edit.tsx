@@ -12,13 +12,13 @@ import useAuth from "../hooks/useAuth";
 import ImageContainer from "./ImageContainer";
 import { ToastContainer, toast } from "react-toastify";
 
-export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
+export const Edit = ({ details, fetchDetails, onEditSuccess }: any) => {
   const [show, setShow] = useState(false);
   const [reload, setReload] = useState(0);
-  const [dbImages, setDbImages] = useState([]);
-  const [Question, setQuestion] = useState<React.SetStateAction<any>>();
+  const [dbImages, setDbImages] = useState<string[]>([]);
+  const [Question, setQuestion] = useState<React.SetStateAction<string>>();
   const [selectedImages, setSelectedImages] = useState<image[]>([]);
-  const [Answer, setAnswer] = useState<React.SetStateAction<any>>(
+  const [Answer, setAnswer] = useState<React.SetStateAction<string>>(
     details.Item.answer
   );
   const Did: any = details.Item.questionId;
@@ -36,23 +36,15 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
   interface image {
     preview: string;
     data: string;
+    name: string;
+    type: string;
   }
 
   useEffect(() => {
     setDbImages(details.Item.imageLocation);
   }, [details]);
 
-  //console.log(dbImages, "dbImages");
-
-  // console.log(details.Item.imageLocation, "Location");
-
   const handleFileChange = (e: any) => {
-    // const img = {
-    //   preview: URL.createObjectURL(e.target.files[0]),
-    //   data: e.target.files[0],
-    // };
-    // setImage(img);
-
     if (selectedImages.length < 4) {
       const selectedFiles = e.target.files;
       const selectedFilesArray = Array.from(selectedFiles);
@@ -80,7 +72,6 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
         imagesArray = [...imagesArray, ...newImagesArray];
       }
 
-      // console.log(imagesArray);
       if (imagesArray.length <= 4) {
         setSelectedImages(imagesArray);
       } else {
@@ -129,11 +120,9 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
       newAnswer = details.Item.answer;
     }
     if (Question === undefined) {
-      // setQuestion(details.Item.question);
       newQuestion = details.Item.question;
     }
     if (Answer === undefined) {
-      // setAnswer(details.Item.answer);
       newAnswer = details.Item.answer;
     }
 
@@ -150,12 +139,9 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
       imgLocation: dbImages,
     };
 
-    //console.log("images", selectedImages);
-
     const formData = new FormData();
-    // formData.append("image", image.data);
+
     for (let i = 0; i < selectedImages.length; i++) {
-      //console.log(selectedImages[i]);
       formData.append("images", selectedImages[i].data);
     }
     formData.append("data", JSON.stringify(data));
@@ -193,13 +179,10 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
         });
       });
 
-    // onEdit();
     setReload(reload + 1);
     onEditSuccess();
     setSelectedImages([]);
     navigate(`/Details/${Did}`);
-    //navigate("/");
-    //window.location.reload();
   };
 
   return (
@@ -246,15 +229,7 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
               <label>
                 <b> Answer</b>
               </label>
-              {/* show quill editing area */}
-              {/* <textarea
-                className="form-control"
-                defaultValue={details.Item.answer}
-                id="Answer"
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                }}
-              ></textarea> */}
+
               <ReactQuill
                 theme="snow"
                 defaultValue={details.Item.answer}
@@ -262,14 +237,6 @@ export const Edit = ({ details, onEdit, fetchDetails, onEditSuccess }: any) => {
               />
               <br></br>
               {details.Item.imageLocation !== "null" ? (
-                // <img
-                //   style={{ marginLeft: "20px" }}
-                //   className="previewimg"
-                //   src={Details.Item.imageLocation}
-                //   alt="UploadImage"
-                //   width="200"
-                //   height="200"
-                // />
                 <ImageContainer
                   dbImages={dbImages}
                   setDbImages={setDbImages}
